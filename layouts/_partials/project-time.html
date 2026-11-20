@@ -1,0 +1,21 @@
+{{- /*
+  Parses a project `start` or `end`: a year (2026), a month ("2026-07") or a date (2026-07-31).
+  Returns a dict: year, label ("2026" or "July 2026"), month (true unless only a year was given)
+  and until (Unix time at the end of that year, month or day).
+*/ -}}
+{{- $v := . }}
+{{- $type := printf "%T" $v }}
+{{- $s := "" }}
+{{- if ne $type "time.Time" }}{{ $s = strings.TrimSpace (string $v) }}{{ end }}
+{{- $res := dict }}
+{{- if findRE `^\d{4}$` $s }}
+  {{- $y := int $s }}
+  {{- $res = dict "year" $y "label" $s "month" false "until" (time.AsTime (printf "%d-01-01" (add $y 1))).Unix }}
+{{- else if findRE `^\d{4}-\d{2}$` $s }}
+  {{- $t := time.AsTime (printf "%s-01" $s) }}
+  {{- $res = dict "year" $t.Year "label" ($t | time.Format "January 2006") "month" true "until" ($t.AddDate 0 1 0).Unix }}
+{{- else }}
+  {{- $t := time.AsTime $v }}
+  {{- $res = dict "year" $t.Year "label" ($t | time.Format "January 2006") "month" true "until" ($t.AddDate 0 0 1).Unix }}
+{{- end }}
+{{- return $res }}

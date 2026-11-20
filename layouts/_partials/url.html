@@ -1,0 +1,17 @@
+{{- /*
+  Resolves a URL written in content or front matter.
+  External links stay unchanged; site paths like "/projects/" get the base path (needed on GitHub Pages).
+*/ -}}
+{{- $dest := . | string }}
+{{- $href := $dest }}
+{{- if strings.HasPrefix $dest "/" }}
+  {{- $u := urls.Parse $dest }}
+  {{- $path := strings.TrimSuffix "/" $u.Path }}
+  {{- with and $path (site.GetPage $path) }}
+    {{- $href = .RelPermalink }}
+  {{- else }}
+    {{- $href = relURL (strings.TrimPrefix "/" $u.Path) }}
+  {{- end }}
+  {{- with $u.Fragment }}{{ $href = printf "%s#%s" $href . }}{{ end }}
+{{- end }}
+{{- return $href }}

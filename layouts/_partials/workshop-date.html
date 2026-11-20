@@ -1,0 +1,8 @@
+{{- /* Date or date range of a workshop: "9 July 2024", "22–23 September 2026". Context: workshop page. */ -}}
+{{- $s := time.AsTime .Params.start }}
+{{- with .Params.end }}
+  {{- $e := time.AsTime . }}
+  {{- if and (eq $s.Year $e.Year) (eq $s.Month $e.Month) }}{{ $s.Day }}–{{ $e | time.Format "2 January 2006" }}
+  {{- else if eq $s.Year $e.Year }}{{ $s | time.Format "2 January" }} – {{ $e | time.Format "2 January 2006" }}
+  {{- else }}{{ $s | time.Format "2 January 2006" }} – {{ $e | time.Format "2 January 2006" }}{{ end }}
+{{- else }}{{ $s | time.Format "2 January 2006" }}{{ end -}}

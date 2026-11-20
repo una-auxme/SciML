@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760" width="1600" height="760">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef8f3"/>
+      <stop offset="1" stop-color="#ddf1e7"/>
+    </linearGradient>
+    <linearGradient id="p1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b5dcc8"/>
+      <stop offset="1" stop-color="#9fd1b8"/>
+    </linearGradient>
+    <linearGradient id="p2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fcaad"/>
+      <stop offset="1" stop-color="#79bf9e"/>
+    </linearGradient>
+    <g id="person">
+      <circle cx="0" cy="-118" r="52"/>
+      <path d="M-98 40 C-98 -40 -56 -56 0 -56 C56 -56 98 -40 98 40 Z"/>
+    </g>
+  </defs>
+  <rect width="1600" height="760" fill="url(#bg)"/>
+  <path d="M0 610 C300 560 520 640 800 600 C1080 560 1300 630 1600 590 L1600 760 L0 760 Z" fill="#cfe9dc"/>
+  <g fill="url(#p1)">
+    <use href="#person" transform="translate(330 560)"/>
+    <use href="#person" transform="translate(560 545)"/>
+    <use href="#person" transform="translate(800 540)"/>
+    <use href="#person" transform="translate(1040 545)"/>
+    <use href="#person" transform="translate(1270 560)"/>
+  </g>
+  <g fill="url(#p2)">
+    <use href="#person" transform="translate(215 720) scale(1.08)"/>
+    <use href="#person" transform="translate(445 715) scale(1.08)"/>
+    <use href="#person" transform="translate(680 712) scale(1.08)"/>
+    <use href="#person" transform="translate(920 712) scale(1.08)"/>
+    <use href="#person" transform="translate(1155 715) scale(1.08)"/>
+    <use href="#person" transform="translate(1385 720) scale(1.08)"/>
+  </g>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif" text-anchor="middle">
+    <text x="800" y="150" font-size="44" font-weight="600" fill="#0b5e3b">Your group photo</text>
+    <text x="800" y="200" font-size="26" fill="#2f7a57">Replace content/group-photo.svg with group-photo.jpg</text>
+  </g>
+</svg>

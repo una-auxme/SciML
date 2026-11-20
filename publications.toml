@@ -1,0 +1,164 @@
+# ---------------------------------------------------------------------------
+#  Publication curation
+#
+#  Publications are fetched automatically from the ORCID records of all members
+#  (field `orcid` on each member page) by scripts/update_publications.py, which
+#  runs weekly on GitHub. Use this file only to correct or complete that list.
+# ---------------------------------------------------------------------------
+
+# Optional contact address sent along with API requests (recommended by Crossref).
+contact_email = ""
+
+# Publication types to list. Possible values:
+# journal, conference, preprint, chapter, book, thesis, report, software, dataset, other
+include_types = ["journal", "conference", "preprint", "chapter", "book", "thesis", "report"]
+
+# Publications to hide, by DOI or by exact title (e.g. works wrongly attributed to a member).
+exclude = [
+  # "10.1234/not-our-paper",
+]
+
+# Add or change fields of a fetched publication, matched by `doi` (or by `title`).
+# Possible fields: code, pdf, note, type, venue, title, authors, year, date, url
+# [[override]]
+# doi = "10.1234/abcd.5678"
+# code = "https://github.com/your-org/your-repo"
+# note = "Best Paper Award"
+
+# Tobias's dissertation: ORCID lists it as a "book" with the supervisor as contributor.
+[[override]]
+title = "Scientific machine learning for hybrid modeling in real world engineering: Validated on examples from automotive and medical industry"
+type = "thesis"
+authors = ["Tobias Thummerer"]
+venue = "University of Augsburg"
+date = "2026-03-16"
+url = "https://opus.bibliothek.uni-augsburg.de/opus4/130046"
+pdf = "https://opus.bibliothek.uni-augsburg.de/opus4/files/130046/Thummerer_Diss.pdf"
+
+# ECC 2026 paper: ORCID only has the year; publication date on IEEE Xplore.
+[[override]]
+title = "Neural ODE-based Optimal Thermal System Control for Electric Vehicles with multi-functional Heat Pump System"
+date = "2026-08-07"
+
+# Publications that are not on ORCID (better: add them to your ORCID record!).
+# If you give a DOI, missing metadata is fetched automatically.
+# `authors` are matched to members by name; `members` can list member folders explicitly.
+
+# [[manual]]
+# title = "Title of the paper"
+# authors = ["First Author", "Tobias Thummerer"]
+# year = 2026
+# month = 5
+# type = "conference"
+# venue = "Proceedings of ..."
+# url = "https://..."
+
+# ---------------------------------------------------------------------------
+#  News for new publications (scripts/create_publication_news.py, weekly)
+#  Each new publication of the group gets a short news item: member authors,
+#  title, venue and a one- or two-sentence summary of the abstract.
+#  Already announced publications are listed in data/announced_publications.json.
+# ---------------------------------------------------------------------------
+[news]
+enabled = true
+types = ["journal", "conference", "preprint", "chapter", "book"]   # theses are announced by hand
+max_age_days = 365      # publications older than this (e.g. added late to ORCID) are not announced
+max_per_run = 5         # further new publications are announced in the following weeks
+
+# ---------------------------------------------------------------------------
+#  Publication map on the home page (scripts/update_publication_map.py, monthly)
+#  Every publication of the group is a circle, sized by its number of citations. Lines: one
+#  publication cites the other (solid) or both share at least `related_min_shared` references
+#  (dashed). Citations come from OpenAlex and Crossref. A switch above the map changes the
+#  grouping between methods and applications; the circles move to their new groups.
+#  To show the group photo instead, set `publicationMap = false` in content/_index.md.
+# ---------------------------------------------------------------------------
+[map]
+related_min_shared = 4
+
+# How topics are assigned, in both groupings: a publication gets the topic whose keywords it
+# contains most often (the title counts three times as much as the abstract). Keywords match the
+# beginning of words, case-insensitive ("polic" matches "policy" and "policies"). At most six
+# topics per grouping with the default colors (or give a topic its own `color`).
+# The script prints how each publication was assigned; pin exceptions with [[map.paper]] below.
+
+# Topic names are shown on the map as written here (Title Case).
+
+# --- Grouping 1 (shown first): application areas. Publications without any keyword go to the
+#     `fallback` topic (gray).
+[[map.applications]]
+name = "Automotive & E-Mobility"
+keywords = ["automotive", "vehicle", "driving", "to drive", "highway", "traffic", "cabin", "powertrain",
+            "charging station", "e-mobility", "heat pump"]
+
+[[map.applications]]
+name = "Mechatronics & Robotics"
+keywords = ["mechatronic", "robot arm", "scara", "manipulator", "excavator", "pendulum", "reaction wheel", "mems",
+            "micro-electro-mechanical", "legged"]
+
+[[map.applications]]
+name = "Medicine & Health"
+keywords = ["medic", "cardiovascular", "health", "patient", "clinical", "physiolog", "human body", "biomedic"]
+
+[[map.applications]]
+name = "Materials Science"
+keywords = ["material", "diffraction", "x-ray", "raman", "spectra", "spectroscop", "phase analysis",
+            "phase transition", "mineral", "lipid", "crystal"]
+
+[[map.applications]]
+name = "Simulation Software"
+keywords = ["modelica", "dymola", "co-simulation", "cosimulation", "fmi", "fmu", "functional mock-up",
+            "simulation tool", "software tool", "toolchain"]
+
+[[map.applications]]
+name = "General Methods"
+fallback = true
+keywords = ["academic example", "benchmark", "mujoco", "continuous control environment"]
+
+# --- Grouping 2: methods. Publications without any keyword get the most similar topic.
+[[map.methods]]
+name = "Hybrid Modeling & FMI"
+keywords = ["hybrid model", "hybrid twin", "neuralfmu", "neural functional mock-up", "functional mock-up", "fmu", "fmi",
+            "co-simulation", "cosimulation", "modelica", "dymola", "pen-ode", "physics-enhanced", "model combination"]
+
+[[map.methods]]
+name = "Neural ODEs & Model Reduction"
+keywords = ["neural ode", "neuralode", "neural ordinary differential", "model order reduction", "reduced-order",
+            "koopman", "eigen-informed", "eigenvalue"]
+
+[[map.methods]]
+name = "Bayesian Inverse Problems"
+keywords = ["bayesflow", "bayesian", "inverse problem", "inverse model", "parameter identification",
+            "parameter extraction", "parameter estimation", "model calibration", "normalizing flow", "uncertainty"]
+
+[[map.methods]]
+name = "Imitation Learning"
+keywords = ["imitation", "demonstration", "polic", "learning from observation", "reinforcement", "adversarial"]
+
+[[map.methods]]
+name = "Control & Optimization"
+keywords = ["control", "optimal", "optimiz", "model predictive", "stabiliz"]
+
+[[map.methods]]
+name = "Deep Learning Architectures"
+keywords = ["convolutional", "vision transformer", "transformer", "sequential network", "recurrent", "lstm",
+            "attention", "deep learning", "architecture"]
+
+# Per publication (matched by `doi` or exact `title`): pin the `application` and/or `method`
+# topic, add an `abstract` where none is found, add citations the databases miss (`cites`:
+# DOIs or titles), or remove it from the map (`hide = true`).
+
+# These abstracts describe the FMU tooling at length; the application is the use case.
+[[map.paper]]
+title = "NeuralFMU: Presenting a Workflow for Integrating Hybrid NeuralODEs into Real-World Applications"
+application = "Automotive & E-Mobility"   # vehicle longitudinal dynamics model
+
+[[map.paper]]
+title = "Paving the way for Hybrid Twins using Neural Functional Mock-Up Units"
+application = "Mechatronics & Robotics"   # hydraulic excavator arm
+
+# [[map.paper]]
+# title = "Title of the publication"
+# application = "Medicine & Health"
+# method = "Hybrid Modeling & FMI"
+# cites = ["10.3390/electronics11193202"]

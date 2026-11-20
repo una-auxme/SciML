@@ -1,0 +1,64 @@
+{{ define "main" }}
+{{- $p := .Params }}
+{{- $period := partial "project-status.html" . }}
+{{- $done := $period.done }}
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a></nav>
+  <article class="project-page">
+    <header class="project-head">
+      <p class="eyebrow">{{ if eq $p.funding "internal" }}Internal project{{ else }}{{ $p.funder | default "Funded project" }}{{ end }}</p>
+      <h1>{{ with $p.acronym }}<span class="acronym">{{ . }}</span>{{ end }}{{ .Title }}</h1>
+      {{- with .RawSummary }}<p class="lead">{{ . | $.RenderString }}</p>{{ end }}
+    </header>
+
+    {{- with .Resources.GetMatch "cover.*" }}
+    <figure class="project-banner">
+      {{ partial "image.html" (dict "res" . "alt" "" "ratio" 0.4 "loading" "eager" "widths" (slice 640 960 1280 1600) "sizes" "(min-width: 1200px) 1160px, calc(100vw - 2rem)") }}
+    </figure>
+    {{- end }}
+
+    <div class="project-layout">
+      <div class="prose">{{ .Content }}</div>
+      {{- /* The facts box only appears when there is something to show */ -}}
+      {{- $public := and (eq $p.funding "public") (or $p.funder $p.grant) }}
+      {{- if or $public $period.long $p.partners $p.website $p.members }}
+      <aside class="project-facts">
+        <dl>
+          {{- if eq $p.funding "public" }}
+          {{- with $p.funder }}<div><dt>Funded by</dt><dd>{{ . }}</dd></div>{{ end }}
+          {{- with $p.grant }}<div><dt>Grant</dt><dd>{{ . }}</dd></div>{{ end }}
+          {{- end }}
+          {{- with $period.long }}<div><dt>Duration</dt><dd>{{ . }}{{ if $done }} (completed){{ end }}</dd></div>{{ end }}
+          {{- with $p.partners }}<div><dt>Partners</dt><dd><ul>{{ range . }}<li>{{ . }}</li>{{ end }}</ul></dd></div>{{ end }}
+          {{- with $p.website }}<div><dt>Website</dt><dd><a href="{{ . }}">{{ replaceRE `^https?://(www\.)?` "" . | strings.TrimSuffix "/" }}</a></dd></div>{{ end }}
+        </dl>
+        {{- with $p.members }}
+        <h2 class="facts-title">Team</h2>
+        <ul class="team-list">
+          {{- range . }}
+            {{- with site.GetPage (printf "/members/%s" .) }}
+            <li><a href="{{ .RelPermalink }}">{{ partial "avatar.html" (dict "page" . "sizes" "40px" "class" "avatar-sm") }}<span>{{ .Title }}</span></a></li>
+            {{- else }}
+              {{- errorf "%s: member %q does not exist (expected a folder content/members/%s/)" $.File.Path . . }}
+            {{- end }}
+          {{- end }}
+        </ul>
+        {{- end }}
+      </aside>
+      {{- end }}
+    </div>
+
+    {{- with $p.publications }}
+      {{- $dois := apply . "lower" "." }}
+      {{- $pubs := slice }}
+      {{- range hugo.Data.publications.publications }}{{ if in $dois .doi }}{{ $pubs = $pubs | append . }}{{ end }}{{ end }}
+      {{- with $pubs }}
+      <section class="project-pubs">
+        <h2 class="section-title">Publications</h2>
+        <ol class="pub-list">{{ range . }}{{ partial "pub-item.html" . }}{{ end }}</ol>
+      </section>
+      {{- end }}
+    {{- end }}
+  </article>
+</div>
+{{ end }}

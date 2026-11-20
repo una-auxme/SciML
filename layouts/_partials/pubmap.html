@@ -1,0 +1,80 @@
+{{- /*
+  Publication map on the home page. Topics (one per grouping: methods, applications), citation
+  links, abstracts and citation counts come from data/publication_map.json
+  (scripts/update_publication_map.py, monthly); titles, authors and links from
+  data/publications.json, so corrections in publications.toml apply immediately.
+  The map is drawn by assets/js/pubmap.js. Context: the home page.
+*/ -}}
+{{- $map := hugo.Data.publication_map }}
+{{- $groupings := $map.groupings | default slice }}
+{{- $group := partialCached "pubs-group.html" "group" }}
+{{- $nodes := slice }}
+{{- $ids := slice }}
+{{- range $map.nodes }}
+  {{- $n := . }}
+  {{- range first 1 (where $group "id" $n.id) }}
+    {{- $p := . }}
+    {{- $authors := slice }}
+    {{- range first 12 ($p.authors | default slice) }}
+      {{- $href := "" }}
+      {{- $member := false }}
+      {{- with .member }}{{ with site.GetPage (printf "/members/%s" .) }}{{ $href = .RelPermalink }}{{ $member = true }}{{ end }}{{ end }}
+      {{- if and (not $href) .orcid }}{{ $href = printf "https://orcid.org/%s" .orcid }}{{ end }}
+      {{- $authors = $authors | append (dict "name" .name "href" $href "member" $member) }}
+    {{- end }}
+    {{- $url := $p.url | default (cond (isset $p "doi") (printf "https://doi.org/%s" $p.doi) "") }}
+    {{- $nodes = $nodes | append (dict
+      "id" $n.id "topics" $n.topics "cites" ($n.cited_by | default 0)
+      "title" $p.title "url" $url "year" $p.year "venue" ($p.venue | default "")
+      "type" (index site.Params.publicationTypes $p.type | default $p.type)
+      "authors" $authors "more" (gt (len ($p.authors | default slice)) 12)
+      "abstract" ($n.abstract | default "")) }}
+    {{- $ids = $ids | append $n.id }}
+  {{- end }}
+{{- end }}
+{{- $links := slice }}
+{{- range $map.links }}
+  {{- if and (in $ids .source) (in $ids .target) }}{{ $links = $links | append (dict "s" .source "t" .target "k" .kind) }}{{ end }}
+{{- end }}
+{{- $cites := len (where $links "k" "cites") }}
+{{- $data := dict "groupings" $groupings "nodes" $nodes "links" $links }}
+<figure class="pubmap" aria-labelledby="pubmap-title">
+  <div class="pubmap-head">
+    <div>
+      <h2 class="pubmap-title" id="pubmap-title">Our research at a glance</h2>
+      <p class="pubmap-stats">{{ len $nodes }} publications · {{ $cites }} citations among them</p>
+    </div>
+    {{- if gt (len $groupings) 1 }}
+    <div class="pubmap-switch" role="group" aria-label="Group the publications by" style="{{ printf "--n:%d" (len $groupings) | safeCSS }}">
+      {{- range $i, $g := $groupings }}
+      <button type="button" data-grouping="{{ .key }}" aria-pressed="{{ cond (eq $i 0) "true" "false" }}">{{ .name }}</button>
+      {{- end }}
+    </div>
+    {{- end }}
+  </div>
+  <div class="pubmap-canvas" data-pubmap>
+    <p class="pubmap-fallback">The interactive map needs JavaScript. All publications are listed on the
+      {{ with site.GetPage "/publications" }}<a href="{{ .RelPermalink }}">publications page</a>{{ end }}.</p>
+  </div>
+  {{- range $i, $g := $groupings }}
+  <ul class="pubmap-legend" data-grouping="{{ .key }}" aria-label="{{ .name }}"{{ if $i }} hidden{{ end }}>
+    {{- range .topics }}
+    <li><button type="button" data-topic="{{ .key }}" aria-pressed="false" style="{{ printf "--c:%s" .color | safeCSS }}">
+      <span class="pubmap-dot" aria-hidden="true"></span>{{ .name }}<span class="pubmap-count">{{ .count }}</span>
+    </button></li>
+    {{- end }}
+  </ul>
+  {{- end }}
+  <figcaption class="pubmap-caption">
+    Each circle is one of our publications, sized by how often it has been cited.
+    {{- if gt (len $groupings) 1 }} The switch groups them by application area or by research method.{{ end }}
+    Solid lines connect publications that cite each other, dashed lines publications with several shared references.
+    Hover over or tap a circle for the abstract and authors.
+    {{- with site.GetPage "/publications" }} <a href="{{ .RelPermalink }}">All publications as a list</a>.{{ end }}
+    {{- with $map.updated }} <span class="pubmap-updated">Citation data from OpenAlex and Crossref, updated {{ time.Format "January 2006" . }}.</span>{{ end }}
+  </figcaption>
+  <script type="application/json" class="pubmap-data">{{ $data | jsonify | safeJS }}</script>
+</figure>
+{{- with resources.Get "js/pubmap.js" | minify | fingerprint }}
+<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+{{- end }}

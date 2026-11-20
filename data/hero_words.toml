@@ -1,0 +1,33 @@
+# Words that rotate in the big title on the home page. They replace {words} in the `heading`
+# of content/_index.md ("Where {words} meet{s} machine learning"). The first word is shown when
+# the page loads (and to visitors who switch off animations).
+
+interval = 3   # seconds per word
+random = true  # true: random order (each word once before any repeats); false: the order below
+
+words = [
+  "physics-based models",
+  "first principles",
+  "stability",
+  "prior knowledge",
+  "controllers",
+  "ODEs",
+  "PDEs",
+  "solvers",
+  "numerical algorithms",
+  "robots",
+  "e-mobility",
+  "energy",
+  "simulations",
+  "hemodynamics",
+]
+
+# Words that are grammatically singular. For them, {s} in the heading becomes "s"
+# ("Where stability meets ..."); for all other words it stays empty ("Where ODEs meet ...").
+singular = [
+  "e-mobility",
+  "stability",
+  "prior knowledge",
+  "energy",
+  "hemodynamics",
+]

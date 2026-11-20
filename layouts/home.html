@@ -1,0 +1,143 @@
+{{ define "main" }}
+{{- $pubs := partialCached "pubs-group.html" "group" }}
+{{- $members := where site.RegularPages "Section" "members" }}
+{{- $projects := where site.RegularPages "Section" "projects" }}
+{{- $ongoing := slice }}
+{{- range $projects }}{{ if not (partial "project-status.html" .).done }}{{ $ongoing = $ongoing | append . }}{{ end }}{{ end }}
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-text">
+      {{- /* The line above the title wraps only between its parts ("A · B · C"), never inside one */ -}}
+      {{- with .Params.hero.eyebrow }}
+      {{- $parts := split . " · " }}
+      <p class="eyebrow">{{ range $i, $part := $parts }}{{ if $i }} {{ end }}<span class="nowrap">{{ $part }}{{ if lt (add $i 1) (len $parts) }} ·{{ end }}</span>{{ end }}</p>
+      {{- end }}
+      {{- $heading := .Params.hero.heading | default .Title }}
+      {{- $words := hugo.Data.hero_words.words | default slice }}
+      {{- $singular := hugo.Data.hero_words.singular | default slice }}
+      {{- if and $words (strings.Contains $heading "{words}") }}
+      {{- /* Rotating words (data/hero_words.toml). All words sit in the same grid cell, so the title
+             keeps the size of the longest word and nothing below it moves when the word changes.
+             {s} after the words is an "s" that is shown for singular words ("meets") and slides
+             away for plural ones ("meet"). Screen readers get the heading with the first word only. */ -}}
+      {{- $parts := split $heading "{words}" }}
+      {{- $first := index $words 0 }}
+      {{- $firstS := in $singular $first }}
+      {{- $after := index $parts 1 | strings.TrimLeft " " | htmlEscape }}
+      <h1 class="hero-title{{ if $firstS }} has-s{{ end }}">
+        <span class="sr-only">{{ replace (replace $heading "{words}" $first) "{s}" (cond $firstS "s" "") }}</span>
+        <span aria-hidden="true">{{ replace (index $parts 0) "{s}" "" }}<span class="hero-rotator" data-interval="{{ hugo.Data.hero_words.interval | default 2 }}"{{ if hugo.Data.hero_words.random }} data-random{{ end }}>
+          {{- range $i, $w := $words }}<span class="hero-word{{ if eq $i 0 }} is-current{{ end }}"{{ if in $singular $w }} data-singular{{ end }}>{{ $w }}</span>{{ end -}}
+        </span><br>{{ replace $after "{s}" `<span class="hero-s">s</span>` | safeHTML }}</span>
+      </h1>
+      {{- else }}
+      <h1 class="hero-title">{{ replace (replace $heading "{words}" "") "{s}" "" }}</h1>
+      {{- end }}
+      {{- with .Params.hero.lead }}<p class="hero-lead">{{ . }}</p>{{ end }}
+      {{- with .Params.hero.buttons }}
+      <div class="hero-actions">
+        {{- range . }}
+        <a class="btn {{ if eq .style "secondary" }}btn-secondary{{ else }}btn-primary{{ end }}" href="{{ partial "url.html" .url }}">{{ .label }}{{ if ne .style "secondary" }}{{ partial "icon.html" "arrow" }}{{ end }}</a>
+        {{- end }}
+      </div>
+      {{- end }}
+    </div>
+    {{- if and (ne .Params.publicationMap false) (hugo.Data.publication_map.nodes | default slice) }}
+    {{ partial "pubmap.html" . }}
+    {{- else }}
+    {{- with .Resources.GetMatch "group-photo.*" }}
+    <figure class="group-photo">
+      {{ partial "image.html" (dict "res" . "alt" ($.Params.photoAlt | default "Group photo") "loading" "eager" "widths" (slice 640 960 1280 1920 2400) "sizes" "(min-width: 1200px) 1160px, calc(100vw - 2rem)") }}
+      {{- with $.Params.photoCaption }}<figcaption>{{ . }}</figcaption>{{ end }}
+    </figure>
+    {{- end }}
+    {{- end }}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container about">
+    <div class="prose about-text">
+      <h2 class="section-title">About us</h2>
+      {{ .Content }}
+    </div>
+    <dl class="facts">
+      <div class="fact"><dt>Members</dt><dd>{{ len (where $members "Params.group" "ne" "alumni") }}</dd></div>
+      <div class="fact"><dt>Ongoing projects</dt><dd>{{ len $ongoing }}</dd></div>
+      <div class="fact"><dt>Publications</dt><dd>{{ len $pubs }}</dd></div>
+      <div class="fact"><dt>Software packages</dt><dd>{{ len (hugo.Data.software.package | default slice) }}</dd></div>
+    </dl>
+  </div>
+</section>
+
+{{- with .Params.focus }}
+<section class="section section-soft">
+  <div class="container">
+    <h2 class="section-title">Research focus</h2>
+    <div class="grid grid-4">
+      {{- range . }}
+      <div class="card focus-card">
+        <span class="focus-icon">{{ partial "icon.html" .icon }}</span>
+        <h3>{{ .title }}</h3>
+        <p>{{ .text }}</p>
+      </div>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+<section class="section">
+  <div class="container two-col">
+    {{- with site.GetPage "/news" }}
+    <div>
+      <div class="section-head">
+        <h2 class="section-title">News</h2>
+        <a class="more" href="{{ .RelPermalink }}">All news {{ partial "icon.html" "arrow" }}</a>
+      </div>
+      <div class="news-list news-compact">
+        {{- range first 3 .Pages.ByDate.Reverse }}{{ partial "news-item.html" . }}{{ end }}
+      </div>
+    </div>
+    {{- end }}
+    <div>
+      <div class="section-head">
+        <h2 class="section-title">Recent publications</h2>
+        {{- with site.GetPage "/publications" }}<a class="more" href="{{ .RelPermalink }}">All publications {{ partial "icon.html" "arrow" }}</a>{{ end }}
+      </div>
+      <ol class="pub-list pub-compact">
+        {{- range first 4 $pubs }}{{ partial "pub-item.html" . }}{{ end }}
+      </ol>
+    </div>
+  </div>
+</section>
+
+{{- with $ongoing }}
+<section class="section section-soft">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Current projects</h2>
+      {{- with site.GetPage "/projects" }}<a class="more" href="{{ .RelPermalink }}">All projects {{ partial "icon.html" "arrow" }}</a>{{ end }}
+    </div>
+    <div class="grid grid-3">
+      {{- range first 3 . }}{{ partial "project-card.html" . }}{{ end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+{{- with site.GetPage "/join" }}
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <div>
+        <h2>Join the team</h2>
+        <p>We are looking for doctoral researchers, student assistants and thesis students.</p>
+      </div>
+      <a class="btn btn-light" href="{{ .RelPermalink }}">Open positions {{ partial "icon.html" "arrow" }}</a>
+    </div>
+  </div>
+</section>
+{{- end }}
+{{ end }}

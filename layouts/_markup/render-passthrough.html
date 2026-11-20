@@ -1,0 +1,3 @@
+{{- /* Math in Markdown ($...$ and $$...$$), rendered to MathML when the site is built. */ -}}
+{{- $math := transform.ToMath .Inner (dict "displayMode" (eq .Type "block") "throwOnError" false) }}
+{{- if eq .Type "block" }}<div class="math-block">{{ $math }}</div>{{ else }}{{ $math }}{{ end -}}

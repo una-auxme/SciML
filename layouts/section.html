@@ -1,0 +1,16 @@
+{{- /* Fallback for any new section you add in content/ */ -}}
+{{ define "main" }}
+<section class="page-head">
+  <div class="container narrow">
+    <h1>{{ .Title }}</h1>
+    {{- with .Content }}<div class="lead">{{ . }}</div>{{ end }}
+  </div>
+</section>
+<div class="container narrow">
+  <ul class="simple-list">
+    {{- range .Pages }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Description }}<span class="muted"> — {{ . }}</span>{{ end }}</li>
+    {{- end }}
+  </ul>
+</div>
+{{ end }}

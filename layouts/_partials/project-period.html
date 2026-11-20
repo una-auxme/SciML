@@ -1,0 +1,3 @@
+{{- with (partial "project-status.html" .).short -}}
+<span class="period">{{ partial "icon.html" "calendar" }}{{ . }}</span>
+{{- end -}}

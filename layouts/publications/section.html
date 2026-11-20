@@ -1,0 +1,45 @@
+{{ define "main" }}
+{{- $pubs := partialCached "pubs-group.html" "group" }}
+{{- $types := slice }}{{ $slugs := slice }}
+{{- range $pubs }}{{ $types = $types | append .type }}{{ $slugs = $slugs | append (.members | default slice) }}{{ end }}
+
+<section class="page-head">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    {{- with .Content }}<div class="lead">{{ . }}</div>{{ end }}
+  </div>
+</section>
+
+<div class="container">
+  <form class="pub-filter" data-pub-filter role="search" aria-label="Filter publications">
+    <label class="field field-search">
+      <span class="sr-only">Search</span>
+      {{ partial "icon.html" "search" }}
+      <input type="search" name="q" placeholder="Search title, author, venue …" autocomplete="off">
+    </label>
+    <label class="field">
+      <span class="sr-only">Type</span>
+      <select name="type">
+        <option value="">All types</option>
+        {{- range $key, $label := site.Params.publicationTypes }}{{ if in $types $key }}<option value="{{ $key }}">{{ $label }}</option>{{ end }}{{ end }}
+      </select>
+    </label>
+    <label class="field">
+      <span class="sr-only">Member</span>
+      <select name="member">
+        <option value="">All members</option>
+        {{- range (where site.RegularPages "Section" "members").ByTitle }}{{ if in $slugs .File.ContentBaseName }}<option value="{{ .File.ContentBaseName }}">{{ .Title }}</option>{{ end }}{{ end }}
+      </select>
+    </label>
+  </form>
+
+  <p class="pub-summary">
+    <span><strong data-pub-count>{{ len $pubs }}</strong> publications</span>
+    {{- with hugo.Data.publications.updated }}<span class="muted">Updated {{ time.Format ":date_long" . }}</span>{{ end }}
+    {{- with .OutputFormats.Get "bibtex" }}<a href="{{ .RelPermalink }}" download>{{ partial "icon.html" "download" }}BibTeX of all</a>{{ end }}
+  </p>
+
+  {{ partial "pub-list.html" (dict "pubs" $pubs) }}
+  <p class="pub-empty muted" hidden data-pub-empty>No publications match your filter.</p>
+</div>
+{{ end }}

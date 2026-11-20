@@ -1,0 +1,37 @@
+{{- /* One publication. Context: a publication from data/publications.json */ -}}
+{{- $p := . }}
+{{- $names := slice }}
+{{- $authors := $p.authors | default slice }}
+{{- range $authors }}{{ $names = $names | append .name }}{{ end }}
+{{- $maxAuthors := 12 }}
+<li class="pub" id="pub-{{ anchorize $p.id }}" data-type="{{ $p.type }}" data-members="{{ delimit ($p.members | default slice) " " }}" data-search="{{ lower (printf "%s %s %s %v" $p.title (delimit $names " ") ($p.venue | default "") $p.year) }}">
+  <div class="pub-meta">
+    <span class="badge badge-{{ $p.type }}">{{ index site.Params.publicationTypes $p.type | default $p.type }}</span>
+    {{- with $p.note }}<span class="badge badge-note">{{ partial "icon.html" "award" }}{{ . }}</span>{{ end }}
+  </div>
+  <p class="pub-title">
+    {{- with $p.url }}<a href="{{ . }}">{{ $p.title }}</a>{{ else }}{{ $p.title }}{{ end -}}
+  </p>
+  <p class="pub-authors">
+    {{- range $i, $a := first $maxAuthors $authors }}
+      {{- if $i }}, {{ end }}
+      {{- with $a.member }}
+        {{- with site.GetPage (printf "/members/%s" .) }}<a class="pub-member" href="{{ .RelPermalink }}">{{ $a.name }}</a>{{ else }}{{ $a.name }}{{ end }}
+      {{- else }}{{ $a.name }}{{ end }}
+    {{- end }}
+    {{- if gt (len $authors) $maxAuthors }}, et al.{{ end -}}
+  </p>
+  <p class="pub-venue">{{ with $p.venue }}<em>{{ . }}</em>, {{ end }}{{ $p.year }}</p>
+  <div class="pub-links">
+    {{- with $p.doi }}<a href="https://doi.org/{{ . }}">{{ partial "icon.html" "link" }}DOI</a>{{ end }}
+    {{- with $p.pdf }}<a href="{{ partial "url.html" . }}">{{ partial "icon.html" "file" }}PDF</a>{{ end }}
+    {{- with $p.preprint }}<a href="{{ . }}">{{ partial "icon.html" "file" }}Preprint</a>{{ end }}
+    {{- with $p.code }}<a href="{{ . }}">{{ partial "icon.html" "code" }}Code</a>{{ end }}
+    {{- with $p.bibtex }}
+    <details class="pub-bib">
+      <summary>{{ partial "icon.html" "quote" }}BibTeX</summary>
+      <div class="bib-box"><pre><code>{{ . }}</code></pre><button type="button" class="copy-btn" data-copy>Copy</button></div>
+    </details>
+    {{- end }}
+  </div>
+</li>

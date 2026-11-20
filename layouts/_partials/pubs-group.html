@@ -1,0 +1,26 @@
+{{- /*
+  Returns the publications of the group: every publication with at least one member author
+  who was in the group in that year (member fields `joined` / `left`; both optional).
+  Members with `group_publications = false` (e.g. the head of chair) only count through
+  co-authorship with other members.
+  Call it as: partialCached "pubs-group.html" "group"
+*/ -}}
+{{- $periods := dict }}
+{{- range where site.RegularPages "Section" "members" }}
+  {{- if ne .Params.group_publications false }}
+    {{- $periods = merge $periods (dict .File.ContentBaseName (dict "from" (.Params.joined | default 0) "to" (.Params.left | default 9999))) }}
+  {{- end }}
+{{- end }}
+{{- $out := slice }}
+{{- range (hugo.Data.publications.publications | default slice) }}
+  {{- $p := . }}
+  {{- $year := $p.year | default 0 }}
+  {{- $in := not $p.members }}
+  {{- range $p.members }}
+    {{- with index $periods . }}
+      {{- if and (ge $year .from) (le $year .to) }}{{ $in = true }}{{ end }}
+    {{- end }}
+  {{- end }}
+  {{- if $in }}{{ $out = $out | append $p }}{{ end }}
+{{- end }}
+{{- return $out }}

@@ -1,0 +1,247 @@
+# Website manual
+
+How to edit and maintain the website of the Scientific Machine Learning Research Group. For an
+overview of the repository and the license, see [README.md](README.md).
+
+The website is built with [Hugo](https://gohugo.io) and hosted on GitHub Pages.
+All content lives in Markdown and TOML files. Edit a file, commit it, and the site redeploys
+within about a minute. You can do this directly in the GitHub web editor; no local setup is needed.
+
+The site loads no external fonts, scripts or trackers. Embedded YouTube videos are loaded only
+after a visitor clicks play.
+
+## Where things live
+
+| What | Where |
+| --- | --- |
+| Home page text, research focus, hero | `content/_index.md` |
+| Rotating words in the home page title | `data/hero_words.toml` (list, singular words that take "meets", seconds per word) |
+| Publication map (home page) | automatic, topics in the `[map]` section of `publications.toml` |
+| Group photo | `content/group-photo.jpg` (any `group-photo.*` works; shown instead of the map with `publicationMap = false` in `content/_index.md`) |
+| Members | `content/members/<name>/index.md` (+ optional `photo.jpg`) |
+| Projects | `content/projects/<name>/index.md` (+ optional `cover.jpg`) |
+| News | `content/news/<date>-<title>.md` |
+| Workshops | `content/workshops/<name>.md` (all on one page, newest first) |
+| Software | `data/software.toml` (GitHub stars are fetched automatically) |
+| Publications | automatic from ORCID, corrections in `publications.toml` |
+| Join us, contact, imprint, privacy | `content/join.md`, `content/contact.md`, ... |
+| Site name, address, menu, member groups | `hugo.toml` |
+| Colors | `--accent` at the top of `assets/css/main.css` |
+| Logo | `static/logo/` (SVG + PNG exports, shown via `layouts/_partials/logo.html`); favicons `static/favicon.svg`, `static/favicon.ico`, `static/apple-touch-icon.png` |
+| Chair logo (AuxMe, right of the header) | `static/chair/` (SVG wordmark + "X" mark for phones, from `M:\01_Vorlagen\11_Logo` with the text converted to outlines); file names and link in `hugo.toml` (`chairLogo`, `chairIcon`, `chairURL`) |
+
+## Everyday tasks
+
+### Add a member
+
+1. Create the folder `content/members/firstname-lastname/`.
+2. Add `index.md`; copy an existing member's file as a template.
+3. Optional: add a square-ish portrait as `photo.jpg` in the same folder. It is cropped to a square
+   and resized automatically. Without a photo, the person's initials are shown.
+4. Set `orcid` so the member's publications appear automatically.
+
+| Field | Meaning |
+| --- | --- |
+| `title` | Full name |
+| `prefix` | Academic title shown before the name, e.g. `Dr.` |
+| `suffix` | Degree shown after the name, e.g. `M.Sc.` |
+| `position` | Shown below the name, e.g. `Research associate` |
+| `group` | Section on the members page: `chair`, `lead`, `postdoc`, `researcher`, `phd`, `staff`, `student`, `alumni` (labels and order in `hugo.toml`) |
+| `weight` | Order within the section (smaller comes first) |
+| `email`, `phone`, `office`, `website` | Contact details (all optional) |
+| `orcid`, `scholar`, `github`, `linkedin` | Profile links: ORCID iD, Google Scholar user id, GitHub user name, LinkedIn URL |
+| `interests` | Keywords, the first three are shown on the member card |
+| `joined`, `left` | Years. The group-wide publication list only counts a member's papers from this period. |
+| `name_variants` | Other spellings of the name in author lists, e.g. `["J. Doe"]` |
+| `group_publications` | `false` lists this person's papers group-wide only when a group member co-authored them (used for the head of chair) |
+
+The text below the front matter is the research statement. Math works: `$f_\theta(x)$`.
+
+### A member leaves
+
+Set `group = "alumni"`, `left = <year>` and optionally `now = "Position at Company"`.
+Their page and publications stay online; the person moves to the "Former members" list
+(remove contact details that are no longer valid, such as the office).
+
+### Add a project
+
+Create `content/projects/<short-name>/index.md` (copy an existing project) and add a cover image
+`cover.jpg` (landscape, ideally 16:9). `funding` is `public` or `internal`. `members` lists member
+folder names; the build fails with a clear message if one does not exist. `start` and `end` are a
+year (`2026`) or a month (`"2026-07"`, with quotes). Projects whose `end` has passed are shown as
+completed and no longer appear under "Current projects" on the home page.
+
+### Add news
+
+Create `content/news/2026-11-18-short-title.md` with `title`, `date` and one or two sentences.
+The three newest items appear on the home page.
+
+### Add a workshop
+
+Create `content/workshops/<short-name>.md` (copy an existing one, or run
+`hugo new content workshops/<short-name>.md`). All workshops are shown on the workshops page,
+newest first; link to one with `/workshops/#<short-name>`. Workshops that have not ended yet are
+marked as upcoming.
+
+| Field | Meaning |
+| --- | --- |
+| `title`, `event`, `format` | Title of the workshop, the conference or event, and a label such as `Hands-on workshop` |
+| `start`, `end` | First and last day, e.g. `2026-09-22` (`end` only for workshops over several days) |
+| `location` | Place |
+| `role`, `people`, `guests` | e.g. `role = "Organized by"`, member folder names, and other people by name |
+| `youtube` | YouTube video ID, the part after `watch?v=` in the video URL |
+| `[[links]]` | Buttons with `label` and `url`, e.g. workshop website, materials, program |
+
+The text below the front matter is the description.
+
+Videos are privacy-friendly: the preview image is downloaded from YouTube when the site is built.
+The player is loaded from youtube-nocookie.com only after a click. The same works in any
+Markdown page with `{{</* youtube VIDEO_ID */>}}`. The privacy page has a matching section on YouTube.
+
+### Publications
+
+Publications are **not** maintained by hand. Once a week, the workflow *Weekly update*
+runs `scripts/update_publications.py`, which
+
+1. reads the ORCID iD of every member,
+2. downloads their public works from ORCID,
+3. completes authors, venue and type through the DOI (Crossref, DataCite/arXiv, ...),
+4. merges duplicates (co-authored papers appear once; a preprint becomes a link on its published version),
+5. writes `data/publications.json` and redeploys the site.
+
+Members keep their ORCID record up to date, ideally with Crossref auto-update switched on in ORCID,
+and the website follows. Co-authored papers appear once in the group list and on each author's page.
+
+To fix things, edit `publications.toml`:
+
+- `exclude`: hide a publication (DOI or exact title)
+- `[[override]]`: add a code or PDF link, an award note, or fix the type or venue of a publication
+- `[[manual]]`: add a publication that is not on ORCID
+
+To update right away: *Actions → Weekly update → Run workflow*.
+
+Only papers with at least one group member (in the group during that year) are listed group-wide.
+Papers of the head of chair (`group_publications = false`) count only when co-authored by a group
+member; all of that person's papers still appear on their own member page.
+
+### News for new publications
+
+After fetching publications, the weekly workflow runs `scripts/create_publication_news.py`. For every
+new publication in the group list, it writes a news item to `content/news/` naming the member
+authors, the title and venue, with a one- or two-sentence summary of the abstract:
+
+- With the repository secret `ANTHROPIC_API_KEY` (*Settings → Secrets and variables → Actions*),
+  Claude writes the summary from the abstract (model `claude-opus-5-5`; a few cents per paper).
+- Without it, the summary is the TLDR from Semantic Scholar or the key sentence of the abstract.
+
+Generated news items are ordinary Markdown files: edit or delete them like any other news.
+`data/announced_publications.json` records what was announced, so nothing is announced twice.
+Settings (publication types, maximum age, maximum items per week) are in the `[news]` section of
+`publications.toml`. Theses are not announced automatically. To preview locally without writing files:
+
+```bash
+python scripts/create_publication_news.py --dry-run
+```
+
+After adding new members' ORCID iDs, `--backfill` also announces their publications from the last year
+(within `max_age_days`), dated at the publication date:
+
+```bash
+python scripts/create_publication_news.py --backfill
+```
+
+### Publication map
+
+Below the introduction, the home page shows an interactive map of the group's publications
+(the same publications as the group list):
+
+- Each circle is a publication, sized by its number of citations and colored by its topic.
+- A switch above the map groups the publications by **applications** (shown first) or by **methods**.
+  The circles then move to their clusters in the other grouping.
+- Solid lines connect publications where one cites the other. Dashed lines connect publications
+  that share at least `related_min_shared` references.
+- Hovering over a circle, focusing it with the keyboard or tapping it on a phone shows the title,
+  authors, venue and abstract. Member names link to their pages and other authors to their ORCID profile.
+- The topic chips below the map highlight one topic.
+
+Once a month, the workflow *Publication map* runs `scripts/update_publication_map.py`. It fetches the
+reference lists and citation counts from OpenAlex and Crossref, and abstracts from OpenAlex, Crossref,
+arXiv or Semantic Scholar. It writes `data/publication_map.json` and redeploys the site. Titles,
+authors and links come from `data/publications.json` when the site is built, so a new
+publication appears on the map after the next monthly run. To update right away:
+*Actions → Publication map → Run workflow*.
+
+Topics are set in the `[map]` section of `publications.toml`: `[[map.applications]]` for the
+application grouping and `[[map.methods]]` for the method grouping. Topic names appear on the map
+exactly as written there (Title Case). Each topic has a name and keywords;
+each grouping has at most six topics with the default colors. In each grouping, every publication gets
+the topic whose keywords appear most often in its title (counts three times) and abstract. Publications
+without any application keyword go to the gray `fallback` topic ("General Methods"). When the script
+runs, it prints how each publication was assigned. `[[map.paper]]` entries can:
+
+- pin a publication's `method` or `application`,
+- add an `abstract` where none was found,
+- add citations the databases miss (`cites`),
+- remove a publication from the map (`hide = true`).
+After editing topics, re-apply them without network access:
+
+```bash
+python scripts/update_publication_map.py --offline
+```
+
+### Software
+
+Add a `[[package]]` block to `data/software.toml` with `name`, `description`, `repo`, `docs` and `tags`.
+For GitHub repositories, the *Weekly update* workflow also runs `scripts/update_github_stars.py`,
+which stores the current star counts in `data/github_stars.json`. The software page shows them
+with a star icon and sorts the packages by stars (most first). To fetch them locally:
+
+```bash
+python scripts/update_github_stars.py
+```
+
+## Local preview (optional)
+
+Install Hugo (extended edition, v0.156 or newer) and run the server:
+
+```bash
+winget install Hugo.Hugo.Extended
+```
+
+```bash
+hugo server
+```
+
+Then open the address Hugo prints (<http://localhost:1313/sciml-group/> with the example `baseURL`
+in `hugo.toml`). Pages reload as you edit. To refresh publications locally
+(Python 3.11+, no packages needed):
+
+```bash
+python scripts/update_publications.py
+```
+
+DOI metadata is cached in `data/publications.json`; add `--refresh` to look up every DOI again
+(e.g. after removing an override), or `--offline` to only re-apply `publications.toml`.
+
+New pages can also be created from templates, e.g. `hugo new content members/jane-doe/index.md`.
+
+## One-time setup on GitHub
+
+1. Push this repository to GitHub (for example `your-org/website`).
+2. *Settings → Pages → Build and deployment → Source*: select **GitHub Actions**.
+3. Push to `main` (or run *Actions → Deploy site*). The site appears at
+   `https://<org>.github.io/<repo>/`. The base URL is set automatically.
+4. Run *Actions → Weekly update* once after adding ORCID iDs or software packages, then
+   *Actions → Publication map*.
+5. Optional: set a custom domain such as `sciml.your-university.de` under *Settings → Pages*.
+   Your university's IT department has to add a DNS CNAME record for it.
+
+Note: GitHub pauses scheduled workflows in repositories without activity for 60 days. If that
+happens, GitHub shows a banner on the Actions tab; one click re-enables the workflow.
+
+## Before going live
+
+- Replace all placeholder content (members, projects, news, `publications.toml`).
+- **Imprint and privacy policy**: required for German websites. Ask your university for its standard texts.
+  Keep the section on YouTube videos (anchor `#youtube`, linked below every video) in the final privacy policy.
+- Check whether your university requires a link to, or a mention on, its official website.

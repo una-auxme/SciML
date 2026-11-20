@@ -1,0 +1,50 @@
+{{ define "main" }}
+<section class="page-head">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    {{- with .Content }}<div class="lead">{{ . }}</div>{{ end }}
+  </div>
+</section>
+
+<div class="container">
+  {{- /*
+    Star counts come from data/github_stars.json, updated weekly by scripts/update_github_stars.py.
+    Packages are sorted by stars (descending); ties and packages without stars keep the order of data/software.toml.
+  */}}
+  {{- $stars := hugo.Data.github_stars.stars | default dict }}
+  {{- $starsUpdated := hugo.Data.github_stars.updated }}
+  {{- $pkgs := slice }}
+  {{- range $i, $p := hugo.Data.software.package }}
+    {{- $repo := $p.repo | default "" }}
+    {{- $key := replaceRE `^https?://(www\.)?github\.com/([^/]+/[^/#?]+?)(\.git)?/?$` "$2" $repo }}
+    {{- $n := 0 }}
+    {{- if ne $key $repo }}{{ with index $stars $key }}{{ $n = int . }}{{ end }}{{ end }}
+    {{- $pkgs = $pkgs | append (dict "pkg" $p "stars" $n "sortkey" (add (mul $n 1000) (sub 999 $i))) }}
+  {{- end }}
+
+  <div class="grid grid-2">
+    {{- range sort $pkgs "sortkey" "desc" }}
+    {{- $n := .stars }}
+    {{- with .pkg }}
+    <article class="card software-card">
+      <header class="software-head">
+        <h2>{{ .name }}</h2>
+        {{- if gt $n 0 }}
+        <a class="stars" href="{{ strings.TrimSuffix "/" .repo }}/stargazers" title="GitHub stars{{ with $starsUpdated }} (as of {{ time.Format ":date_long" . }}){{ end }}" aria-label="{{ $n }} GitHub stars">
+          {{- partial "icon.html" "star" -}}
+          <span>{{ if ge $n 1000 }}{{ printf "%.1fk" (div (float $n) 1000) }}{{ else }}{{ $n }}{{ end }}</span>
+        </a>
+        {{- end }}
+      </header>
+      <p>{{ .description }}</p>
+      {{- with .tags }}<p class="tags">{{ range . }}<span class="tag">{{ . }}</span>{{ end }}</p>{{ end }}
+      <p class="card-links">
+        {{- with .repo }}<a href="{{ . }}">{{ partial "icon.html" (cond (strings.Contains . "github.com") "github" "code") }}Source code</a>{{ end }}
+        {{- with .docs }}<a href="{{ . }}">{{ partial "icon.html" "book" }}Documentation</a>{{ end }}
+      </p>
+    </article>
+    {{- end }}
+    {{- end }}
+  </div>
+</div>
+{{ end }}

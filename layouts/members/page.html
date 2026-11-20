@@ -1,0 +1,59 @@
+{{ define "main" }}
+{{- $slug := .File.ContentBaseName }}
+{{- $pubs := where (hugo.Data.publications.publications | default slice) "members" "intersect" (slice $slug) }}
+{{- $projects := where (where site.RegularPages "Section" "projects") "Params.members" "intersect" (slice $slug) }}
+{{- $p := .Params }}
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a></nav>
+  <article class="member-layout">
+    <aside class="member-aside">
+      {{ partial "avatar.html" (dict "page" . "sizes" "(min-width: 900px) 240px, 160px" "class" "avatar-xl") }}
+      <ul class="contact-list">
+        {{- with $p.email }}<li><a href="mailto:{{ . }}">{{ partial "icon.html" "mail" }}{{ . }}</a></li>{{ end }}
+        {{- with $p.phone }}<li><a href="tel:{{ replaceRE `[^+\d]` "" . }}">{{ partial "icon.html" "phone" }}{{ . }}</a></li>{{ end }}
+        {{- with $p.office }}<li><span>{{ partial "icon.html" "pin" }}{{ . }}</span></li>{{ end }}
+        {{- with $p.website }}<li><a href="{{ . }}">{{ partial "icon.html" "globe" }}Website</a></li>{{ end }}
+        {{- with $p.orcid }}<li><a href="https://orcid.org/{{ . }}">{{ partial "icon.html" "orcid" }}ORCID</a></li>{{ end }}
+        {{- with $p.scholar }}<li><a href="https://scholar.google.com/citations?user={{ . }}">{{ partial "icon.html" "scholar" }}Google Scholar</a></li>{{ end }}
+        {{- with $p.github }}<li><a href="https://github.com/{{ . }}">{{ partial "icon.html" "github" }}GitHub</a></li>{{ end }}
+        {{- with $p.linkedin }}<li><a href="{{ . }}">{{ partial "icon.html" "linkedin" }}LinkedIn</a></li>{{ end }}
+      </ul>
+    </aside>
+
+    <div class="member-main">
+      <header class="member-head">
+        <h1>{{ with $p.prefix }}<span class="prefix">{{ . }}</span> {{ end }}{{ .Title }}{{ with $p.suffix }}<span class="prefix">, {{ . }}</span>{{ end }}</h1>
+        <p class="member-position">{{ $p.position }}{{ with $p.now }} · now: {{ . }}{{ end }}</p>
+        {{- with $p.interests }}<p class="tags">{{ range . }}<span class="tag">{{ . }}</span>{{ end }}</p>{{ end }}
+      </header>
+
+      {{- with .Content }}
+      <section class="member-section">
+        <h2 class="section-title">Research</h2>
+        <div class="prose">{{ . }}</div>
+      </section>
+      {{- end }}
+
+      {{- with $projects }}
+      <section class="member-section">
+        <h2 class="section-title">Projects</h2>
+        <ul class="mini-projects">
+          {{- range . }}
+          <li>
+            <a href="{{ .RelPermalink }}">{{ with .Params.acronym }}<strong>{{ . }}</strong> · {{ end }}{{ .Title }}</a>
+            <span class="muted">{{ partial "project-period.html" . }}</span>
+          </li>
+          {{- end }}
+        </ul>
+      </section>
+      {{- end }}
+
+      <section class="member-section">
+        <h2 class="section-title">Publications {{ with $pubs }}<span class="count">{{ len . }}</span>{{ end }}</h2>
+        {{ partial "pub-list.html" (dict "pubs" $pubs "headingLevel" 3) }}
+      </section>
+    </div>
+  </article>
+</div>
+{{ end }}

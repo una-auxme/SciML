@@ -1,0 +1,26 @@
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="{{ site.Home.RelPermalink }}">
+        {{ partial "logo.html" . }}
+        <span class="brand-name">{{ site.Title }}</span>
+      </a>
+      <address>
+        {{- range $i, $line := site.Params.address }}{{ if $i }}<br>{{ end }}{{ $line }}{{ end }}
+        {{- with site.Params.email }}<br><a href="mailto:{{ . }}">{{ . }}</a>{{ end }}
+      </address>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <ul>
+        {{- range site.Menus.main }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
+      </ul>
+      <ul>
+        {{- range site.Menus.footer }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
+        {{- with site.Params.institutionURL }}<li><a href="{{ . }}">University website</a></li>{{ end }}
+      </ul>
+    </nav>
+  </div>
+  <div class="container footer-meta">
+    <span>© {{ now.Year }} {{ site.Copyright | default site.Title }}</span>
+  </div>
+</footer>

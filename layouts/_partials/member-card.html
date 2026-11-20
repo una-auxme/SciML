@@ -1,0 +1,11 @@
+{{- /* Member card on the members page. Context: member page */ -}}
+<a class="member-card" href="{{ .RelPermalink }}">
+  {{ partial "avatar.html" (dict "page" . "sizes" "96px" "class" "avatar-lg") }}
+  <span class="member-card-body">
+    <span class="member-name">{{ with .Params.prefix }}<span class="prefix">{{ . }}</span> {{ end }}{{ .Title }}{{ with .Params.suffix }}<span class="prefix">, {{ . }}</span>{{ end }}</span>
+    <span class="member-position">{{ .Params.position }}</span>
+    {{- with .Params.interests }}
+    <span class="tags">{{ range first 3 . }}<span class="tag">{{ . }}</span>{{ end }}</span>
+    {{- end }}
+  </span>
+</a>

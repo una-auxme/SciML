@@ -1,0 +1,31 @@
+{{ define "main" }}
+<section class="page-head">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    {{- with .Content }}<div class="lead">{{ . }}</div>{{ end }}
+  </div>
+</section>
+
+<div class="container">
+  {{- range $cat := slice (dict "key" "public" "label" "Publicly funded projects") (dict "key" "internal" "label" "Internal projects") }}
+    {{- $list := where $.Pages "Params.funding" $cat.key }}
+    {{- /* ongoing projects first, then completed ones */ -}}
+    {{- $ongoing := slice }}{{ $done := slice }}
+    {{- range $list }}{{ if (partial "project-status.html" .).done }}{{ $done = $done | append . }}{{ else }}{{ $ongoing = $ongoing | append . }}{{ end }}{{ end }}
+    {{- with $list }}
+    <section class="project-group">
+      <h2 class="section-title">{{ $cat.label }}</h2>
+      <div class="grid grid-3">
+        {{- range $ongoing }}{{ partial "project-card.html" . }}{{ end }}
+        {{- range $done }}{{ partial "project-card.html" . }}{{ end }}
+      </div>
+    </section>
+    {{- end }}
+  {{- end }}
+  {{- range .Pages }}
+    {{- if not (in (slice "public" "internal") .Params.funding) }}
+      {{- warnf "%s: funding must be \"public\" or \"internal\", got %q" .File.Path .Params.funding }}
+    {{- end }}
+  {{- end }}
+</div>
+{{ end }}

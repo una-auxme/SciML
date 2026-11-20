@@ -1,0 +1,7 @@
+{{- /*
+  Replaces Hugo's built-in youtube shortcode with a privacy-friendly version that loads the video
+  only after a click. In Markdown: {{< youtube VIDEO_ID >}} or {{< youtube id="VIDEO_ID" title="..." >}}
+*/ -}}
+{{- $id := cond .IsNamedParams (.Get "id") (.Get 0) }}
+{{- $title := cond .IsNamedParams (.Get "title" | default .Page.Title) .Page.Title }}
+{{ partial "video.html" (dict "id" $id "title" $title) }}

@@ -1,0 +1,70 @@
+# Open-source software shown on the /software/ page.
+# Add a new [[package]] block per project. The page sorts packages by GitHub stars
+# (data/github_stars.json, updated weekly); the order here only breaks ties.
+#
+#   name        - package name (required)
+#   description - one or two sentences (required)
+#   repo        - link to the source code
+#   docs        - link to the documentation
+#   tags        - a few keywords
+
+[[package]]
+name = "FMI.jl"
+description = "Load, parameterize, simulate and differentiate Functional Mock-up Units (FMUs) in Julia."
+repo = "https://github.com/JuliaFMI/FMI.jl"
+docs = "https://juliafmi.github.io/FMI.jl/dev/"
+tags = ["Julia", "FMI", "Simulation"]
+
+[[package]]
+name = "FMIImport.jl"
+description = "Import FMUs into Julia: the foundation of FMI.jl and FMIFlux.jl, also usable on its own when you only need FMU import with few dependencies."
+repo = "https://github.com/JuliaFMI/FMIImport.jl"
+docs = "https://juliafmi.github.io/FMI.jl/dev/"
+tags = ["Julia", "FMI"]
+
+[[package]]
+name = "FMIFlux.jl"
+description = "Hybrid modeling with NeuralFMUs: combine FMUs with neural networks and train them end-to-end."
+repo = "https://github.com/JuliaFMI/FMIFlux.jl"
+docs = "https://juliafmi.github.io/FMIFlux.jl/dev/"
+tags = ["Julia", "Hybrid modeling", "Machine learning"]
+
+[[package]]
+name = "FMIExport.jl"
+description = "Export models written in Julia as FMUs for use in other simulation tools."
+repo = "https://github.com/JuliaFMI/FMIExport.jl"
+docs = "https://juliafmi.github.io/FMIExport.jl/dev/"
+tags = ["Julia", "FMI"]
+
+[[package]]
+name = "FMISensitivity.jl"
+description = "Gradients and sensitivities through FMUs using Julia's automatic differentiation."
+repo = "https://github.com/JuliaFMI/FMISensitivity.jl"
+tags = ["Julia", "FMI", "Automatic differentiation"]
+
+[[package]]
+name = "DifferentiableEigen.jl"
+description = "Differentiable eigenvalues and eigenvectors: an eigen function that works with every AD framework supporting ChainRulesCore.jl or ForwardDiff.jl, the basis of eigen-informed neural ODEs."
+repo = "https://github.com/ThummeTo/DifferentiableEigen.jl"
+tags = ["Julia", "Automatic differentiation", "Linear algebra"]
+
+[[package]]
+name = "MeshGraphNets.jl"
+description = "Simulate mesh-based physical systems with graph neural networks: a Julia implementation of the MeshGraphNets framework by Google DeepMind."
+repo = "https://github.com/una-auxme/MeshGraphNets.jl"
+docs = "https://una-auxme.github.io/MeshGraphNets.jl/"
+tags = ["Julia", "Graph neural networks", "Simulation"]
+
+[[package]]
+name = "GraphNetSim.jl"
+description = "Simulate particle-based physical systems with Graph Network Simulators: a Julia implementation of the architecture introduced by Google DeepMind."
+repo = "https://github.com/una-auxme/GraphNetSim.jl"
+docs = "https://una-auxme.github.io/GraphNetSim.jl/"
+tags = ["Julia", "Graph neural networks", "Particle simulation"]
+
+[[package]]
+name = "Optuna.jl"
+description = "A Julia interface to Optuna, the open-source framework for hyperparameter optimization."
+repo = "https://github.com/una-auxme/Optuna.jl"
+docs = "https://una-auxme.github.io/Optuna.jl/"
+tags = ["Julia", "Hyperparameter optimization"]

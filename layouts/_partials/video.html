@@ -1,0 +1,31 @@
+{{- /*
+  YouTube video that loads only after a click (no connection to YouTube before that).
+  The preview image is downloaded from YouTube when the site is built and served from this site.
+  Without JavaScript, the preview links to the video on YouTube.
+  Usage: partial "video.html" (dict "id" "VIDEO_ID" "title" "Title of the video")
+*/ -}}
+{{- $id := .id | default "" }}
+{{- if not (findRE `^[A-Za-z0-9_-]{6,20}$` $id) }}
+  {{- errorf "video.html: %q is not a YouTube video ID (the part after watch?v= in the video URL)" $id }}
+{{- end }}
+{{- $title := .title | default "Video" }}
+{{- $thumb := false }}
+{{- range slice "maxresdefault" "sddefault" "hqdefault" }}
+  {{- if not $thumb }}
+    {{- with try (resources.GetRemote (printf "https://i.ytimg.com/vi/%s/%s.jpg" $id .)) }}
+      {{- with .Err }}{{ warnf "YouTube preview image of %s not available: %s" $id . }}{{ else with .Value }}{{ $thumb = . }}{{ end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+<div class="video" data-youtube="{{ $id }}" data-title="{{ $title }}">
+  <a class="video-load" href="https://www.youtube.com/watch?v={{ $id }}" aria-label="Play video: {{ $title }}">
+    {{- with $thumb }}
+      {{- $img := .Fill "960x540 Center webp q80" }}
+      <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="" loading="lazy" decoding="async">
+    {{- end }}
+    <span class="video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z"/></svg></span>
+  </a>
+  <p class="video-note">The video is loaded from YouTube when you play it
+    {{- with site.GetPage "/privacy" }} (<a href="{{ .RelPermalink }}#youtube">privacy</a>){{ end }}.
+    <a href="https://www.youtube.com/watch?v={{ $id }}">Watch on YouTube</a></p>
+</div>

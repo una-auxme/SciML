@@ -1,0 +1,74 @@
+{{- /* Workshops: all workshops on one page, newest first. Fields: see archetypes/workshops.md */ -}}
+{{ define "main" }}
+<section class="page-head">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    {{- with .Content }}<div class="lead">{{ . }}</div>{{ end }}
+  </div>
+</section>
+
+<div class="container">
+  {{- $items := slice }}
+  {{- range .Pages }}
+    {{- if not .Params.start }}{{ errorf "%s: `start` (first day of the workshop) is missing" .File.Path }}{{ end }}
+    {{- $items = $items | append (dict "page" . "start" (time.AsTime .Params.start).Unix) }}
+  {{- end }}
+  <div class="workshop-list">
+  {{- range sort $items "start" "desc" }}
+    {{- with .page }}
+    {{- $w := . }}
+    {{- $p := .Params }}
+    {{- $start := time.AsTime $p.start }}
+    {{- $end := cond (isset $p "end") (time.AsTime $p.end) $start }}
+    {{- $upcoming := gt $end.Unix now.Unix }}
+    <article class="workshop" id="{{ .File.ContentBaseName }}">
+      <div class="workshop-media">
+        {{- with $p.youtube }}
+          {{- partial "video.html" (dict "id" . "title" (delimit (slice $w.Title ($p.event | default "")) " · ")) }}
+        {{- else }}
+        <div class="workshop-panel" aria-hidden="true">
+          {{ partial "icon.html" "users" }}
+          <strong>{{ $p.event | default .Title }}</strong>
+          <span>{{ partial "workshop-date.html" . }}</span>
+        </div>
+        {{- end }}
+      </div>
+      <div class="workshop-body">
+        <p class="workshop-event">
+          {{- with $p.format }}<span class="badge">{{ . }}</span>{{ end }}
+          {{- if $upcoming }}<span class="badge badge-note">Upcoming</span>{{ end }}
+          {{- with $p.event }}<span>{{ . }}</span>{{ end }}
+        </p>
+        <h2 class="workshop-title">{{ .Title }}</h2>
+        <ul class="workshop-meta">
+          <li>{{ partial "icon.html" "calendar" }}{{ partial "workshop-date.html" . }}</li>
+          {{- with $p.location }}<li>{{ partial "icon.html" "pin" }}{{ . }}</li>{{ end }}
+          {{- if or $p.people $p.guests }}
+          <li>{{ partial "icon.html" "users" }}<span>{{ with $p.role }}{{ . }} {{ end }}
+            {{- $names := slice }}
+            {{- range $p.people }}
+              {{- with site.GetPage (printf "/members/%s" .) }}
+                {{- $names = $names | append (printf `<a href="%s">%s</a>` .RelPermalink .Title) }}
+              {{- else }}
+                {{- errorf "%s: member %q does not exist (expected a folder content/members/%s/)" $w.File.Path . . }}
+              {{- end }}
+            {{- end }}
+            {{- range $p.guests }}{{ $names = $names | append (htmlEscape .) }}{{ end }}
+            {{- delimit $names ", " " and " | safeHTML }}</span></li>
+          {{- end }}
+        </ul>
+        <div class="prose workshop-text">{{ .Content }}</div>
+        {{- with $p.links }}
+        <ul class="workshop-links">
+          {{- range . }}
+          <li><a href="{{ partial "url.html" .url }}">{{ .label }}{{ partial "icon.html" "external" }}</a></li>
+          {{- end }}
+        </ul>
+        {{- end }}
+      </div>
+    </article>
+    {{- end }}
+  {{- end }}
+  </div>
+</div>
+{{ end }}

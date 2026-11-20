@@ -1,0 +1,40 @@
+{{ define "main" }}
+<section class="page-head">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    {{- with .Content }}<div class="lead">{{ . }}</div>{{ end }}
+  </div>
+</section>
+
+<div class="container member-groups">
+  {{- $members := .Pages }}
+  {{- $known := slice }}
+  {{- range $grp := site.Params.memberGroups }}
+    {{- $known = $known | append $grp.key }}
+    {{- with where $members "Params.group" $grp.key }}
+    <section class="member-group{{ if $grp.inline }} is-inline{{ end }}">
+      <h2 class="section-title">{{ $grp.label }}</h2>
+      {{- if eq $grp.key "alumni" }}
+      <ul class="alumni-list">
+        {{- range . }}
+        <li>
+          <a href="{{ .RelPermalink }}">{{ with .Params.prefix }}{{ . }} {{ end }}{{ .Title }}{{ with .Params.suffix }}, {{ . }}{{ end }}</a>
+          <span class="muted">{{ .Params.position }}{{ with .Params.now }} · now: {{ . }}{{ end }}</span>
+        </li>
+        {{- end }}
+      </ul>
+      {{- else }}
+      <div class="member-grid">
+        {{- range . }}{{ partial "member-card.html" . }}{{ end }}
+      </div>
+      {{- end }}
+    </section>
+    {{- end }}
+  {{- end }}
+  {{- range $members }}
+    {{- if not (in $known .Params.group) }}
+      {{- warnf "%s: group %q is not one of the member groups in hugo.toml (%s)" .File.Path .Params.group (delimit $known ", ") }}
+    {{- end }}
+  {{- end }}
+</div>
+{{ end }}

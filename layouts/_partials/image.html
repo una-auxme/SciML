@@ -1,0 +1,43 @@
+{{- /*
+  Responsive image from a page resource.
+  Parameters (dict):
+    res     - the image resource (required)
+    alt     - alternative text
+    widths  - slice of widths to generate (default 480 800 1200 1600)
+    ratio   - optional height/width ratio to crop to, e.g. 0.5625 for 16:9 or 1.0 for squares
+    anchor  - which part to keep when cropping, e.g. "Top" (default: imaging.anchor in hugo.toml)
+    sizes   - the sizes attribute (default 100vw)
+    class   - CSS class
+    loading - "lazy" (default) or "eager"
+  SVG files are used as they are.
+*/ -}}
+{{- $r := .res }}
+{{- $loading := .loading | default "lazy" }}
+{{- $fillOpts := strings.TrimSpace (printf "webp %s" (.anchor | default "")) }}
+{{- if eq $r.MediaType.SubType "svg" }}
+  <img src="{{ $r.RelPermalink }}" alt="{{ .alt }}"{{ with .class }} class="{{ . }}"{{ end }} loading="{{ $loading }}" decoding="async">
+{{- else }}
+  {{- $widths := .widths | default (slice 480 800 1200 1600) }}
+  {{- $srcset := slice }}
+  {{- $img := false }}
+  {{- range $widths }}
+    {{- if le . $r.Width }}
+      {{- if $.ratio }}
+        {{- $img = $r.Fill (printf "%dx%d %s" . (int (math.Round (mul . $.ratio))) $fillOpts) }}
+      {{- else }}
+        {{- $img = $r.Resize (printf "%dx webp" .) }}
+      {{- end }}
+      {{- $srcset = $srcset | append (printf "%s %dw" $img.RelPermalink .) }}
+    {{- end }}
+  {{- end }}
+  {{- if not $img }}
+    {{- $w := $r.Width }}
+    {{- if $.ratio }}
+      {{- $img = $r.Fill (printf "%dx%d %s" $w (int (math.Round (mul $w $.ratio))) $fillOpts) }}
+    {{- else }}
+      {{- $img = $r.Resize (printf "%dx webp" $w) }}
+    {{- end }}
+    {{- $srcset = slice (printf "%s %dw" $img.RelPermalink $w) }}
+  {{- end }}
+  <img src="{{ $img.RelPermalink }}" srcset="{{ delimit $srcset ", " }}" sizes="{{ .sizes | default "100vw" }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ .alt }}"{{ with .class }} class="{{ . }}"{{ end }} loading="{{ $loading }}" decoding="async">
+{{- end }}

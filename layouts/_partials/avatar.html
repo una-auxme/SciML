@@ -1,0 +1,12 @@
+{{- /* Member photo (file photo.* in the member folder) or initials. Params: page, sizes, class */ -}}
+{{- $p := .page }}
+{{- with $p.Resources.GetMatch "photo.*" }}
+  <span class="avatar {{ $.class }}">
+    {{- partial "image.html" (dict "res" . "alt" $p.Title "ratio" 1.0 "anchor" "Top" "widths" (slice 160 320 480) "sizes" ($.sizes | default "160px")) -}}
+  </span>
+{{- else }}
+  {{- $parts := split (strings.TrimSpace $p.Title) " " }}
+  {{- $initials := substr (index $parts 0) 0 1 }}
+  {{- if gt (len $parts) 1 }}{{ $initials = printf "%s%s" $initials (substr (index $parts (sub (len $parts) 1)) 0 1) }}{{ end }}
+  <span class="avatar avatar-initials avatar-c{{ mod (hash.FNV32a $p.Title) 6 }} {{ $.class }}" aria-hidden="true">{{ upper $initials }}</span>
+{{- end }}

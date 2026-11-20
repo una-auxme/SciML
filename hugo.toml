@@ -1,0 +1,151 @@
+# ---------------------------------------------------------------------------
+#  Site settings. Most day-to-day edits happen in content/ instead.
+# ---------------------------------------------------------------------------
+
+# Overridden automatically by the GitHub Actions deploy workflow.
+baseURL = "https://example.github.io/sciml-group/"
+locale = "en"
+title = "Scientific Machine Learning Research Group"
+# Copyright holder in the footer ("© <year> ...") and in the news feed.
+copyright = "Chair of Mechatronics"
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  # Short name shown in the header next to the logo.
+  shortTitle = "SciML Research Group"
+  # Used for search engines and link previews.
+  description = "Research group for Scientific Machine Learning: combining physical models, numerical methods and machine learning."
+  institution = "Chair of Mechatronics, University of Augsburg"
+  institutionURL = "https://www.uni-augsburg.de"
+  email = "sciml@informatik.uni-augsburg.de"
+  address = ["Chair of Mechatronics", "University of Augsburg", "Am Technologiezentrum 8", "86159 Augsburg", "Germany"]
+
+  # Chair logo on the right of the header (files in static/). chairIcon is the compact "X" mark for phones.
+  # Source: M:\01_Vorlagen\11_Logo (Logo_svg.svg with the text converted to outlines, X_svg.svg cropped).
+  chairLogo = "chair/auxme-logo.svg"
+  chairIcon = "chair/auxme-icon.svg"
+  chairName = "AuxMe – Chair of Mechatronics, University of Augsburg"
+  chairURL = "https://www.uni-augsburg.de/en/fakultaet/fai/informatik/prof/imech/"
+
+  # Sections on the members page, in this order. Each member's `group` field picks one.
+  # Consecutive sections with `inline = true` are shown side by side (stacked on phones).
+  [[params.memberGroups]]
+    key = "lead"
+    label = "Head of research group"
+    inline = true
+  [[params.memberGroups]]
+    key = "chair"
+    label = "Head of corresponding chair"
+    inline = true
+  [[params.memberGroups]]
+    key = "postdoc"
+    label = "Postdoctoral researchers"
+  [[params.memberGroups]]
+    key = "researcher"
+    label = "Research associates"
+  [[params.memberGroups]]
+    key = "phd"
+    label = "Doctoral researchers"
+  [[params.memberGroups]]
+    key = "staff"
+    label = "Staff"
+  [[params.memberGroups]]
+    key = "student"
+    label = "Student assistants"
+  [[params.memberGroups]]
+    key = "alumni"
+    label = "Former members"
+
+  # Labels for publication types (keys are produced by scripts/update_publications.py).
+  [params.publicationTypes]
+    journal = "Journal article"
+    conference = "Conference paper"
+    preprint = "Preprint"
+    chapter = "Book chapter"
+    book = "Book"
+    thesis = "Thesis"
+    report = "Report"
+    software = "Software"
+    dataset = "Dataset"
+    other = "Other"
+
+[menus]
+  [[menus.main]]
+    name = "Members"
+    pageRef = "/members"
+    weight = 10
+  [[menus.main]]
+    name = "Projects"
+    pageRef = "/projects"
+    weight = 20
+  [[menus.main]]
+    name = "Publications"
+    pageRef = "/publications"
+    weight = 30
+  [[menus.main]]
+    name = "Software"
+    pageRef = "/software"
+    weight = 40
+  [[menus.main]]
+    name = "Workshops"
+    pageRef = "/workshops"
+    weight = 45
+  [[menus.main]]
+    name = "News"
+    pageRef = "/news"
+    weight = 50
+  [[menus.main]]
+    name = "Join us"
+    pageRef = "/join"
+    weight = 60
+
+  [[menus.footer]]
+    name = "Contact"
+    pageRef = "/contact"
+    weight = 10
+  [[menus.footer]]
+    name = "Imprint"
+    pageRef = "/imprint"
+    weight = 20
+  [[menus.footer]]
+    name = "Privacy"
+    pageRef = "/privacy"
+    weight = 30
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      # Allows raw HTML in Markdown (e.g. for embedding a video).
+      unsafe = true
+    [markup.goldmark.extensions.passthrough]
+      # Math in Markdown: $...$ inline, $$...$$ as block. Rendered to MathML at build time (no JavaScript).
+      enable = true
+      [markup.goldmark.extensions.passthrough.delimiters]
+        inline = [['$', '$']]
+        block = [['$$', '$$']]
+
+[imaging]
+  resampleFilter = "Lanczos"
+  anchor = "Smart"
+  [imaging.jpeg]
+    quality = 82
+  [imaging.webp]
+    quality = 82
+
+# Lets the publications page offer a BibTeX download of the whole list.
+[mediaTypes]
+  [mediaTypes."text/x-bibtex"]
+    suffixes = ["bib"]
+
+[outputFormats]
+  [outputFormats.bibtex]
+    mediaType = "text/x-bibtex"
+    baseName = "publications"
+    isPlainText = true
+    notAlternative = true
+
+[outputs]
+  home = ["html"]
+  section = ["html"]
+  page = ["html"]

@@ -1,0 +1,33 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }}, home">
+      {{ partial "logo.html" . }}
+      <span class="brand-text">
+        <span class="brand-name">{{ site.Params.shortTitle | default site.Title }}</span>
+        <span class="brand-sub">{{ site.Params.institution | default "" | strings.TrimSpace | truncate 48 }}</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul>
+        {{- range site.Menus.main }}
+          {{- $current := false }}
+          {{- with .Page }}
+            {{- if or (eq . $) (and .IsSection (eq .Section $.Section)) }}{{ $current = true }}{{ end }}
+          {{- end }}
+          <li><a href="{{ .URL }}"{{ if $current }} aria-current="page"{{ end }}>{{ .Name }}</a></li>
+        {{- end }}
+      </ul>
+    </nav>
+    {{- with site.Params.chairLogo }}
+    <a class="chair-logo" href="{{ site.Params.chairURL }}" title="{{ site.Params.chairName }}">
+      <img class="chair-logo-wide" src="{{ . | relURL }}" alt="{{ site.Params.chairName }}">
+      {{- with site.Params.chairIcon }}
+      <img class="chair-logo-icon" src="{{ . | relURL }}" alt="{{ site.Params.chairName }}">
+      {{- end }}
+    </a>
+    {{- end }}
+  </div>
+</header>

@@ -1,0 +1,20 @@
+{{- /* Publications grouped by year. Params: pubs (slice), headingLevel (default 2) */ -}}
+{{- $pubs := .pubs }}
+{{- $h := .headingLevel | default 2 }}
+{{- $years := slice }}
+{{- range $pubs }}{{ $years = $years | append (string (.year | default "Undated")) }}{{ end }}
+{{- with $pubs }}
+<div class="pub-years">
+  {{- range uniq $years }}
+    {{- $y := . }}
+    <section class="pub-year">
+      <h{{ $h }} class="pub-year-title">{{ $y }}</h{{ $h }}>
+      <ol class="pub-list">
+        {{- range $pubs }}{{ if eq (string (.year | default "Undated")) $y }}{{ partial "pub-item.html" . }}{{ end }}{{ end }}
+      </ol>
+    </section>
+  {{- end }}
+</div>
+{{- else }}
+<p class="muted">No publications yet.</p>
+{{- end }}

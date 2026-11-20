@@ -1,0 +1,45 @@
+# Once a month: rebuilds the publication map on the home page (topics, citations between the
+# group's publications, abstracts, citation counts), commits data/publication_map.json and
+# redeploys the site. Can also be started by hand: Actions -> Publication map -> Run workflow.
+# Topics and settings: section [map] in publications.toml.
+name: Publication map
+
+on:
+  schedule:
+    - cron: "47 5 1 * *"   # on the 1st of every month, 05:47 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write   # to commit the changes
+  actions: write    # to start the deploy workflow
+
+concurrency:
+  group: data-update   # shared with the weekly update, so the two never push at the same time
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Update the publication map (OpenAlex, Crossref)
+        run: python scripts/update_publication_map.py
+
+      - name: Commit and deploy if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain -- data/publication_map.json)" ]; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/publication_map.json
+          git commit -m "Monthly update: publication map"
+          git push
+          # Pushes made by this workflow do not trigger other workflows, so start the deployment explicitly.
+          gh workflow run deploy.yml --ref "${{ github.ref_name }}"

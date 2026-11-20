@@ -1,0 +1,11 @@
+{{ define "main" }}
+<div class="container narrow">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a></nav>
+  <article class="page">
+    <time class="muted" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
+    <h1>{{ .Title }}</h1>
+    <div class="prose">{{ .Content }}</div>
+    {{- with .Params.link }}<p><a class="btn btn-secondary" href="{{ partial "url.html" . }}">Read more {{ partial "icon.html" "arrow" }}</a></p>{{ end }}
+  </article>
+</div>
+{{ end }}

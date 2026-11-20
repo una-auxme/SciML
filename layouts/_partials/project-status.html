@@ -1,0 +1,22 @@
+{{- /*
+  Period of a project from its `start` and `end` (each a year, a month like "2026-07", or a date).
+  Returns a dict:
+    short  "2023–2026" or "since 2024" (project cards)
+    long   "June 2023 – July 2026", "2023–2027" or "since 2024" (project page)
+    done   true once the end has passed
+  Context: project page.
+*/ -}}
+{{- $res := dict "short" "" "long" "" "done" false }}
+{{- with .Params.start }}
+  {{- $s := partial "project-time.html" . }}
+  {{- with $.Params.end }}
+    {{- $e := partial "project-time.html" . }}
+    {{- $short := cond (eq $s.year $e.year) (string $s.year) (printf "%d–%d" $s.year $e.year) }}
+    {{- $long := $short }}
+    {{- if or $s.month $e.month }}{{ $long = printf "%s – %s" $s.label $e.label }}{{ end }}
+    {{- $res = dict "short" $short "long" $long "done" (lt $e.until now.Unix) }}
+  {{- else }}
+    {{- $res = dict "short" (printf "since %d" $s.year) "long" (printf "since %s" $s.label) "done" false }}
+  {{- end }}
+{{- end }}
+{{- return $res }}
