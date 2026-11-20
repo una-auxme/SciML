@@ -3,7 +3,7 @@ title = "Josef Jouaux"
 prefix = ""
 suffix = "M.Sc."                         # shown after the name
 position = "Research associate"
-group = "researcher"  # chair | lead | postdoc | researcher | phd | staff | student | alumni
+group = "researcher"  # chair | lead | postdoc | researcher | phd | staff | student
 weight = 40                               # order within the group
 
 email = "josef.kircher@uni-a.de"
@@ -16,7 +16,7 @@ linkedin = ""
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/josef-jouaux/"
 
 interests = ["Particle simulation", "Learned dynamics"]
-joined = 2023                            # year joined the chair
+joined = 2023                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 name_variants = ["Josef Kircher"]   # former name, for matching publications
 +++
 

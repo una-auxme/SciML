@@ -24,7 +24,8 @@
     <div class="member-main">
       <header class="member-head">
         <h1>{{ with $p.prefix }}<span class="prefix">{{ . }}</span> {{ end }}{{ .Title }}{{ with $p.suffix }}<span class="prefix">, {{ . }}</span>{{ end }}</h1>
-        <p class="member-position">{{ $p.position }}{{ with $p.now }} · now: {{ . }}{{ end }}</p>
+        {{- $st := partial "member-status.html" . }}
+        <p class="member-position">{{ if $st.former }}Former member{{ with $st.period }} ({{ . }}){{ end }} · {{ end }}{{ $p.position }}{{ with $p.now }} · now: {{ . }}{{ end }}</p>
         {{- with $p.interests }}<p class="tags">{{ range . }}<span class="tag">{{ . }}</span>{{ end }}</p>{{ end }}
       </header>
 

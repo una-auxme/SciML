@@ -3,7 +3,7 @@ title = "Lilli Schmiederer"
 prefix = ""
 suffix = ""
 position = "Student assistant"
-group = "student"  # chair | lead | postdoc | researcher | phd | staff | student | alumni
+group = "student"  # chair | lead | postdoc | researcher | phd | staff | student
 weight = 10                              # order within the group
 
 email = ""

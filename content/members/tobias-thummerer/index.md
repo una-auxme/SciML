@@ -2,7 +2,7 @@
 title = "Tobias Thummerer"
 prefix = "Dr. rer. nat."
 position = "Head of research group"
-group = "lead"  # chair | lead | postdoc | researcher | phd | staff | student | alumni
+group = "lead"  # chair | lead | postdoc | researcher | phd | staff | student
 weight = 1                               # order within the group
 
 email = "tobias.thummerer@uni-a.de"
@@ -15,7 +15,7 @@ linkedin = ""
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/tobias-thummerer/"
 
 interests = ["Scientific machine learning", "Hybrid modeling", "Object-oriented modeling"]
-joined = 2019                            # year joined the chair
+joined = 2019                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
 Tobias Thummerer leads the Scientific Machine Learning group. He has been a research associate at the

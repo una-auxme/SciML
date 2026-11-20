@@ -2,7 +2,7 @@
 title = "Lars Mikelsons"
 prefix = "Prof. Dr.-Ing."
 position = "Head of the Chair of Mechatronics"
-group = "chair"  # chair | lead | postdoc | researcher | phd | staff | student | alumni
+group = "chair"  # chair | lead | postdoc | researcher | phd | staff | student
 weight = 1                               # order within the group
 
 email = "lars.mikelsons@uni-a.de"
@@ -15,7 +15,7 @@ linkedin = ""
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/lars-mikelsons/"
 
 interests = ["Model-based development", "Virtual prototyping", "Mechatronic systems"]
-joined = 2018                            # year joined the chair
+joined = 2018                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 group_publications = false             # his papers count group-wide only when co-authored by a group member
 +++
 

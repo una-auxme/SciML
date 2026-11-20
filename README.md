@@ -17,8 +17,9 @@ hugo          # build into public/
 ```
 
 Pushing to `main` builds the site via GitHub Actions and publishes it to GitHub Pages. Further
-workflows update the publication list, the news for new publications and the GitHub stars once a
-week, and the publication map on the home page once a month.
+workflows rebuild the site and announce new and departing members every day, update the
+publication list, the news for new publications and the GitHub stars once a week, and the
+publication map on the home page once a month.
 
 ## License
 

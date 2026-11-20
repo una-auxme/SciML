@@ -1,7 +1,13 @@
 {{- /*
-  Parses a project `start` or `end`: a year (2026), a month ("2026-07") or a date (2026-07-31).
-  Returns a dict: year, label ("2026" or "July 2026"), month (true unless only a year was given)
-  and until (Unix time at the end of that year, month or day).
+  Parses a date field: a year (2026), a month ("2026-07") or a date (2026-07-31). Used for the
+  `start`/`end` of projects and the `joined`/`left` of members.
+  Returns a dict:
+    year   the year
+    label  "2026", "July 2026" or "31 July 2026"
+    month  true unless only a year was given
+    exact  true when a day was given
+    from   Unix time at the beginning of that year, month or day
+    until  Unix time at the end of that year, month or day
 */ -}}
 {{- $v := . }}
 {{- $type := printf "%T" $v }}
@@ -10,12 +16,15 @@
 {{- $res := dict }}
 {{- if findRE `^\d{4}$` $s }}
   {{- $y := int $s }}
-  {{- $res = dict "year" $y "label" $s "month" false "until" (time.AsTime (printf "%d-01-01" (add $y 1))).Unix }}
+  {{- $res = dict "year" $y "label" $s "month" false "exact" false
+        "from" (time.AsTime (printf "%d-01-01" $y)).Unix "until" (time.AsTime (printf "%d-01-01" (add $y 1))).Unix }}
 {{- else if findRE `^\d{4}-\d{2}$` $s }}
   {{- $t := time.AsTime (printf "%s-01" $s) }}
-  {{- $res = dict "year" $t.Year "label" ($t | time.Format "January 2006") "month" true "until" ($t.AddDate 0 1 0).Unix }}
+  {{- $res = dict "year" $t.Year "label" ($t | time.Format "January 2006") "month" true "exact" false
+        "from" $t.Unix "until" ($t.AddDate 0 1 0).Unix }}
 {{- else }}
   {{- $t := time.AsTime $v }}
-  {{- $res = dict "year" $t.Year "label" ($t | time.Format "January 2006") "month" true "until" ($t.AddDate 0 0 1).Unix }}
+  {{- $res = dict "year" $t.Year "label" ($t | time.Format "January 2006") "month" true "exact" true
+        "from" $t.Unix "until" ($t.AddDate 0 0 1).Unix }}
 {{- end }}
 {{- return $res }}

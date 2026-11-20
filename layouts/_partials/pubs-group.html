@@ -8,7 +8,8 @@
 {{- $periods := dict }}
 {{- range where site.RegularPages "Section" "members" }}
   {{- if ne .Params.group_publications false }}
-    {{- $periods = merge $periods (dict .File.ContentBaseName (dict "from" (.Params.joined | default 0) "to" (.Params.left | default 9999))) }}
+    {{- $st := partial "member-status.html" . }}
+    {{- $periods = merge $periods (dict .File.ContentBaseName (dict "from" $st.fromYear "to" $st.toYear)) }}
   {{- end }}
 {{- end }}
 {{- $out := slice }}

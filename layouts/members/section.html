@@ -1,3 +1,9 @@
+{{- /*
+  Members page. Everyone currently in the group is shown in the section of their `group`.
+  People whose `left` date has passed are listed in the section with key "former" ("Former
+  members"), latest first; that section is filled automatically and is not a value for `group`. People whose `joined` date lies in the future
+  appear from that day on (the site is rebuilt daily).
+*/ -}}
 {{ define "main" }}
 <section class="page-head">
   <div class="container">
@@ -7,32 +13,46 @@
 </section>
 
 <div class="container member-groups">
-  {{- $members := .Pages }}
+  {{- $active := slice }}
+  {{- $former := slice }}
+  {{- range .Pages }}
+    {{- $st := partial "member-status.html" . }}
+    {{- if $st.former }}{{ $former = $former | append (dict "page" . "sort" $st.leftSort "weight" .Weight "period" $st.period) }}
+    {{- else if $st.active }}{{ $active = $active | append . }}{{ end }}
+  {{- end }}
   {{- $known := slice }}
   {{- range $grp := site.Params.memberGroups }}
-    {{- $known = $known | append $grp.key }}
-    {{- with where $members "Params.group" $grp.key }}
-    <section class="member-group{{ if $grp.inline }} is-inline{{ end }}">
+    {{- if eq $grp.key "former" }}
+      {{- with $former }}
+    <section class="member-group">
       <h2 class="section-title">{{ $grp.label }}</h2>
-      {{- if eq $grp.key "alumni" }}
-      <ul class="alumni-list">
-        {{- range . }}
+      <ul class="former-list">
+        {{- range sort (sort . "weight") "sort" "desc" }}
+        {{- $m := .page }}
         <li>
-          <a href="{{ .RelPermalink }}">{{ with .Params.prefix }}{{ . }} {{ end }}{{ .Title }}{{ with .Params.suffix }}, {{ . }}{{ end }}</a>
-          <span class="muted">{{ .Params.position }}{{ with .Params.now }} · now: {{ . }}{{ end }}</span>
+          <a href="{{ $m.RelPermalink }}">{{ with $m.Params.prefix }}{{ . }} {{ end }}{{ $m.Title }}{{ with $m.Params.suffix }}, {{ . }}{{ end }}</a>
+          <span class="muted">{{ $m.Params.position }}{{ with .period }} ({{ . }}){{ end }}{{ with $m.Params.now }} · now: {{ . }}{{ end }}</span>
         </li>
         {{- end }}
       </ul>
-      {{- else }}
+    </section>
+      {{- end }}
+    {{- else }}
+      {{- $known = $known | append $grp.key }}
+      {{- with where $active "Params.group" $grp.key }}
+    <section class="member-group{{ if $grp.inline }} is-inline{{ end }}">
+      <h2 class="section-title">{{ $grp.label }}</h2>
       <div class="member-grid">
         {{- range . }}{{ partial "member-card.html" . }}{{ end }}
       </div>
-      {{- end }}
     </section>
+      {{- end }}
     {{- end }}
   {{- end }}
-  {{- range $members }}
-    {{- if not (in $known .Params.group) }}
+  {{- range .Pages }}
+    {{- if in (slice "former" "alumni") .Params.group }}
+      {{- warnf "%s: group %q is not needed: set `left` to the last day in the group, and keep the group the person was in" .File.Path .Params.group }}
+    {{- else if not (in $known .Params.group) }}
       {{- warnf "%s: group %q is not one of the member groups in hugo.toml (%s)" .File.Path .Params.group (delimit $known ", ") }}
     {{- end }}
   {{- end }}

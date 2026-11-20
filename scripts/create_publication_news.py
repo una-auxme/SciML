@@ -35,7 +35,7 @@ import re
 import sys
 import tomllib
 import urllib.parse
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -80,6 +80,16 @@ def read_members() -> dict[str, dict]:
     return members
 
 
+def year_of(value, default: int) -> int:
+    """Year of a member's `joined`/`left`: a year (2026), a month ("2026-07") or a date (2026-07-31)."""
+    if value in (None, ""):
+        return default
+    if isinstance(value, (date, datetime)):
+        return value.year
+    m = re.match(r"\s*(\d{4})", str(value))
+    return int(m.group(1)) if m else default
+
+
 def in_group_list(p: dict, members: dict[str, dict]) -> bool:
     """Same rule as layouts/_partials/pubs-group.html."""
     if not p.get("members"):
@@ -89,7 +99,7 @@ def in_group_list(p: dict, members: dict[str, dict]) -> bool:
         fm = members.get(slug)
         if fm is None or fm.get("group_publications") is False:
             continue
-        if fm.get("joined", 0) <= year <= fm.get("left", 9999):
+        if year_of(fm.get("joined"), 0) <= year <= year_of(fm.get("left"), 9999):
             return True
     return False
 

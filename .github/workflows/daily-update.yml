@@ -1,0 +1,50 @@
+# Every day: writes welcome and farewell news for members whose `joined` or `left` date has
+# been reached (scripts/create_member_news.py), commits them, and rebuilds the site. The daily
+# rebuild also moves people to "Former members" on their last day, shows new members from their
+# first day, and updates other date-dependent content (completed projects, upcoming workshops).
+# Can also be started by hand: Actions -> Daily update -> Run workflow.
+name: Daily update
+
+on:
+  schedule:
+    - cron: "11 3 * * *"   # every day, 03:11 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write   # to commit new news items
+  actions: write    # to start the deploy workflow
+
+concurrency:
+  group: data-update   # shared with the weekly and monthly updates, so they never push at the same time
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Create welcome and farewell news
+        run: python scripts/create_member_news.py
+
+      - name: Commit if changed
+        run: |
+          paths="content/news data/announced_members.json"
+          if [ -n "$(git status --porcelain -- $paths)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add $paths
+            git commit -m "Daily update: member news"
+            git push
+          else
+            echo "No new member news."
+          fi
+
+      # Always rebuild, so that date-dependent content is current. Pushes made by this workflow
+      # do not trigger other workflows, so start the deployment explicitly.
+      - name: Rebuild the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref "${{ github.ref_name }}"

@@ -1,0 +1,6 @@
+{
+ "_comment": "Member events announced as news (scripts/create_member_news.py). Remove an entry to announce it again.",
+ "announced": [
+  "benjamin-schaab/joined/2026-05-01"
+ ]
+}

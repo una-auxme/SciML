@@ -46,22 +46,44 @@ after a visitor clicks play.
 | `prefix` | Academic title shown before the name, e.g. `Dr.` |
 | `suffix` | Degree shown after the name, e.g. `M.Sc.` |
 | `position` | Shown below the name, e.g. `Research associate` |
-| `group` | Section on the members page: `chair`, `lead`, `postdoc`, `researcher`, `phd`, `staff`, `student`, `alumni` (labels and order in `hugo.toml`) |
+| `group` | Section on the members page: `chair`, `lead`, `postdoc`, `researcher`, `phd`, `staff`, `student` (labels and order in `hugo.toml`). Keep it when the person leaves: `left` moves them to "Former members". |
 | `weight` | Order within the section (smaller comes first) |
 | `email`, `phone`, `office`, `website` | Contact details (all optional) |
 | `orcid`, `scholar`, `github`, `linkedin` | Profile links: ORCID iD, Google Scholar user id, GitHub user name, LinkedIn URL |
 | `interests` | Keywords, the first three are shown on the member card |
-| `joined`, `left` | Years. The group-wide publication list only counts a member's papers from this period. |
+| `joined`, `left` | First and last day in the group: an exact date (`2026-05-01`, no quotes) or just a year (`2022`). See below. |
+| `now` | After leaving: current position, e.g. `"Research engineer at Example GmbH"` |
+| `news`, `welcome`, `farewell` | `news = false` switches off the welcome and farewell news; `welcome`/`farewell` replace their generated text |
 | `name_variants` | Other spellings of the name in author lists, e.g. `["J. Doe"]` |
 | `group_publications` | `false` lists this person's papers group-wide only when a group member co-authored them (used for the head of chair) |
 
 The text below the front matter is the research statement. Math works: `$f_\theta(x)$`.
 
-### A member leaves
+### Joining and leaving
 
-Set `group = "alumni"`, `left = <year>` and optionally `now = "Position at Company"`.
-Their page and publications stay online; the person moves to the "Former members" list
-(remove contact details that are no longer valid, such as the office).
+The dates `joined` and `left` control the members page and the news feed automatically:
+
+- **Members page:** a new member appears on the day given in `joined`. After the day given in
+  `left`, the person moves to "Former members", with the years of membership (and `now`, if
+  given). Their page and publications stay online. Keep `group` as it was, and remove contact
+  details that are no longer valid, such as the office. If only the year (or month) of leaving
+  is known, e.g. `left = 2026`, the person counts as former from the beginning of that year (or
+  month); to prepare a departure in advance, use the exact last day.
+- **News:** on the `joined` date, a news item "Welcome, …!" appears with the position and the
+  first two `interests`; on the `left` date, "Farewell, …!" with the time in the group and `now`.
+  This needs an exact date; with only a year, no news is created. The texts are ordinary files in
+  `content/news/` and can be edited afterwards. Events more than 60 days in the past are not
+  announced, so adding dates for former members later does not fill the news feed.
+- **Publications:** the group-wide list only counts a member's papers from the years between
+  `joined` and `left`.
+
+Dates can be entered in advance: the workflow *Daily update* creates the news and rebuilds the
+site every morning. `data/announced_members.json` records what has been announced. To preview
+the news locally without writing files:
+
+```bash
+python scripts/create_member_news.py --dry-run
+```
 
 ### Add a project
 

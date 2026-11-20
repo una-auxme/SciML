@@ -3,7 +3,7 @@ title = "Valentin Höpfner"
 prefix = ""
 suffix = "M.Sc."                         # shown after the name
 position = "Research associate"
-group = "researcher"  # chair | lead | postdoc | researcher | phd | staff | student | alumni
+group = "researcher"  # chair | lead | postdoc | researcher | phd | staff | student
 weight = 30                               # order within the group
 
 email = "valentin.hoepfner@uni-a.de"
@@ -16,7 +16,7 @@ linkedin = ""
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/valentin-hopfner/"
 
 interests = ["Hybrid models", "Scientific machine learning"]
-joined = 2024                            # year joined the chair
+joined = 2024                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
 Valentin Höpfner has been a research associate at the Chair of Mechatronics since 2024. He studied

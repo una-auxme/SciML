@@ -2,7 +2,7 @@
 title = "Damian Boborzi"
 prefix = "Dr.-Ing."
 position = "Postdoctoral researcher"
-group = "postdoc"  # chair | lead | postdoc | researcher | phd | staff | student | alumni
+group = "postdoc"  # chair | lead | postdoc | researcher | phd | staff | student
 weight = 1                               # order within the group
 
 email = "damian.boborzi@uni-a.de"
@@ -15,7 +15,7 @@ linkedin = ""
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/damian-boborzi/"
 
 interests = ["Normalizing flows", "Reinforcement learning", "Imitation learning"]
-joined = 2021                            # year joined the chair
+joined = 2021                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
 Damian Boborzi has been a research associate at the Chair of Mechatronics since 2021. From 2018 to 2021

@@ -1,0 +1,25 @@
+{{- /*
+  Membership of a person in the group, from `joined` and `left` (each a year, a month like
+  "2026-07" or a date like 2026-07-31). Context: member page. Returns a dict:
+    active      the person is in the group today (joined, and not yet left)
+    former      the person has left: after the day given in `left`; with only a year or a
+                month (exact day unknown), from the beginning of that year or month
+    upcoming    `joined` lies in the future
+    fromYear    year joined (0 when unknown); toYear: year left (9999 while in the group)
+    leftSort    Unix time of leaving, for sorting former members (latest first)
+    period      "2021–2026" for former members, "" otherwise
+*/ -}}
+{{- $p := .Params }}
+{{- $joined := false }}{{ with $p.joined }}{{ $joined = partial "project-time.html" . }}{{ end }}
+{{- $left := false }}{{ with $p.left }}{{ $left = partial "project-time.html" . }}{{ end }}
+{{- $upcoming := and $joined (gt $joined.from now.Unix) }}
+{{- $former := and $left (le (cond $left.exact $left.until $left.from) now.Unix) }}
+{{- $fromYear := 0 }}{{ with $joined }}{{ $fromYear = .year }}{{ end }}
+{{- $toYear := 9999 }}{{ with $left }}{{ $toYear = .year }}{{ end }}
+{{- $leftSort := 0 }}{{ with $left }}{{ $leftSort = .until }}{{ end }}
+{{- $period := "" }}
+{{- if and $former $joined $left }}
+  {{- $period = cond (eq $fromYear $toYear) (string $fromYear) (printf "%d–%d" $fromYear $toYear) }}
+{{- end }}
+{{- return dict "active" (and (not $former) (not $upcoming)) "former" $former "upcoming" $upcoming
+      "fromYear" $fromYear "toYear" $toYear "leftSort" $leftSort "period" $period }}

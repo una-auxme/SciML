@@ -30,6 +30,8 @@ disableKinds = ["taxonomy", "term"]
 
   # Sections on the members page, in this order. Each member's `group` field picks one.
   # Consecutive sections with `inline = true` are shown side by side (stacked on phones).
+  # The "former" section fills itself: members whose `left` date has passed are listed there
+  # (keep their `group` as it was). Members whose `joined` date lies ahead appear from that day on.
   [[params.memberGroups]]
     key = "lead"
     label = "Head of research group"
@@ -54,7 +56,7 @@ disableKinds = ["taxonomy", "term"]
     key = "student"
     label = "Student assistants"
   [[params.memberGroups]]
-    key = "alumni"
+    key = "former"
     label = "Former members"
 
   # Labels for publication types (keys are produced by scripts/update_publications.py).

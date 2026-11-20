@@ -2,7 +2,7 @@
 title = "Andreas Hofmann"
 prefix = "Dipl.-Ing."
 position = "Research associate"
-group = "researcher"  # chair | lead | postdoc | researcher | phd | staff | student | alumni
+group = "researcher"  # chair | lead | postdoc | researcher | phd | staff | student
 weight = 20                               # order within the group
 
 email = "andreas.hofmann@uni-a.de"
@@ -15,7 +15,7 @@ linkedin = ""
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/andreas-hofmann/"
 
 interests = ["Hybrid modeling", "Digital twins", "Mechatronic systems"]
-joined = 2022                            # year joined the chair
+joined = 2022                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
 Andreas Hofmann has been a research associate at the Chair of Mechatronics since 2022. Before that, he

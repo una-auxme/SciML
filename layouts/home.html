@@ -63,7 +63,8 @@
       {{ .Content }}
     </div>
     <dl class="facts">
-      <div class="fact"><dt>Members</dt><dd>{{ len (where $members "Params.group" "ne" "alumni") }}</dd></div>
+      {{- $current := 0 }}{{ range $members }}{{ if (partial "member-status.html" .).active }}{{ $current = add $current 1 }}{{ end }}{{ end }}
+      <div class="fact"><dt>Members</dt><dd>{{ $current }}</dd></div>
       <div class="fact"><dt>Ongoing projects</dt><dd>{{ len $ongoing }}</dd></div>
       <div class="fact"><dt>Publications</dt><dd>{{ len $pubs }}</dd></div>
       <div class="fact"><dt>Software packages</dt><dd>{{ len (hugo.Data.software.package | default slice) }}</dd></div>
