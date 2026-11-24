@@ -18,7 +18,7 @@ interests = ["Scientific machine learning", "Hybrid modeling", "Object-oriented 
 joined = 2019-09-01                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
-Tobias Thummerer leads the Scientific Machine Learning group. He has been a research associate at the
+Tobias leads the Scientific Machine Learning group. Starting in the summer semester of 2027, he will teach the new course *Scientific Machine Learning* at the University of Augsburg. He has been a research associate at the
 Chair of Mechatronics since 2019 and studied engineering and computer sciences at the University of Augsburg.
 
 His research combines data-driven and physical models (hybrid modeling), scientific machine learning, and cross-domain
