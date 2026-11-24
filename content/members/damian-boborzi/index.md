@@ -18,6 +18,6 @@ interests = ["Diffusion Models", "Generative AI", "Normalizing flows", "Reinforc
 joined = 2021                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
-Damian Boborzi has been a research associate at the Chair of Mechatronics at the University of Augsburg since 2021. From 2018 to 2021, he was a doctoral candidate at ETAS GmbH within the Bosch doctoral program, supervised by the chair.
+Damian has been a research associate at the Chair of Mechatronics at the University of Augsburg since 2021. From 2018 to 2021, he was a doctoral candidate at ETAS GmbH within the Bosch doctoral program, supervised by the chair.
 
 His doctoral research focused on the learning-based generation of virtual traffic participants from real-world traffic data and the integration of normalizing flows into reinforcement and imitation learning. His current research addresses 3D generative AI for generative design, using methods such as diffusion and flow-matching models.
