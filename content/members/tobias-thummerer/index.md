@@ -9,18 +9,17 @@ email = "tobias.thummerer@uni-a.de"
 phone = "+49 821 598-69275"
 office = "Room 3052, Building W"
 orcid = "0000-0003-0908-0783"            # publications are fetched automatically from ORCID
-scholar = ""
+scholar = "https://scholar.google.de/citations?user=Fn2-9-AAAAAJ&hl=de&oi=ao"
 github = "ThummeTo"
-linkedin = ""
+linkedin = "https://www.linkedin.com/in/tobias-thummerer-a70435290/"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/tobias-thummerer/"
 
 interests = ["Scientific machine learning", "Hybrid modeling", "Object-oriented modeling"]
-joined = 2019                            # first day in the group: a year (2022) or an exact date (2022-04-01)
+joined = 2019-09-01                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
-Tobias Thummerer leads the Scientific Machine Learning group. He has been a research associate at the
-Chair of Mechatronics since 2019 and studied engineering informatics at the University of Augsburg.
+Tobias leads the Scientific Machine Learning group. Starting in the summer semester of 2027, he will teach the new course *Scientific Machine Learning* at the University of Augsburg. He has been a research associate at the
+Chair of Mechatronics since 2019 and studied engineering and computer sciences at the University of Augsburg.
 
-His research combines data-driven and physical models (scientific machine learning), cross-domain
-object-oriented modeling and influence analysis, and torque-actuated inverted pendulums such as the
-tetrahedron-shaped inverted pendulum (TSIP). He develops the open-source FMI.jl ecosystem.
+His research combines data-driven and physical models (hybrid modeling), scientific machine learning, and cross-domain
+object-oriented modeling. He develops the open-source JuliaFMI ecosystem (former FMI.jl).
