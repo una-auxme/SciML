@@ -48,7 +48,7 @@ after a visitor clicks play.
 | `position` | Shown below the name, e.g. `Research associate` |
 | `group` | Section on the members page: `chair`, `lead`, `postdoc`, `researcher`, `phd`, `staff`, `student` (labels and order in `hugo.toml`). Keep it when the person leaves: `left` moves them to "Former members". |
 | `weight` | Order within the section (smaller comes first) |
-| `email`, `phone`, `office`, `website` | Contact details (all optional) |
+| `email`, `phone`, `office`, `website` | Contact details (all optional). `website` can also be a list of URLs; each is then shown with its domain name |
 | `orcid`, `scholar`, `github`, `linkedin` | Profile links: ORCID iD, Google Scholar user id, GitHub user name, LinkedIn URL |
 | `interests` | Keywords, the first three are shown on the member card |
 | `joined`, `left` | First and last day in the group: an exact date (`2026-05-01`, no quotes) or just a year (`2022`). See below. |
