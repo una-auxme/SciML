@@ -1,5 +1,5 @@
 +++
-title = "Lilli Schmiederer"
+title = "Lilli Schmiderer"
 prefix = ""
 suffix = ""
 position = "Student assistant"
@@ -11,9 +11,9 @@ phone = ""
 office = ""
 orcid = ""                               # add the ORCID iD to list publications automatically
 scholar = ""
-github = ""
+github = "https://github.com/lilliVanillli"
 linkedin = ""
 website = ""
 
-interests = []
+interests = ["FMI"]
 +++
