@@ -13,11 +13,7 @@
         {{- with $p.email }}<li><a href="mailto:{{ . }}">{{ partial "icon.html" "mail" }}{{ . }}</a></li>{{ end }}
         {{- with $p.phone }}<li><a href="tel:{{ replaceRE `[^+\d]` "" . }}">{{ partial "icon.html" "phone" }}{{ . }}</a></li>{{ end }}
         {{- with $p.office }}<li><span>{{ partial "icon.html" "pin" }}{{ . }}</span></li>{{ end }}
-        {{- with $p.website }}
-          {{- if reflect.IsSlice . }}
-            {{- range . }}<li><a href="{{ . }}">{{ partial "icon.html" "globe" }}{{ replaceRE `^https?://(www\.)?` "" . | replaceRE `/.*$` "" }}</a></li>{{ end }}
-          {{- else }}<li><a href="{{ . }}">{{ partial "icon.html" "globe" }}Website</a></li>{{ end }}
-        {{- end }}
+        {{- with $p.website }}<li><a href="{{ . }}">{{ partial "icon.html" "globe" }}Website</a></li>{{ end }}
         {{- with $p.orcid }}<li><a href="https://orcid.org/{{ . }}">{{ partial "icon.html" "orcid" }}ORCID</a></li>{{ end }}
         {{- with $p.scholar }}<li><a href="https://scholar.google.com/citations?user={{ . }}">{{ partial "icon.html" "scholar" }}Google Scholar</a></li>{{ end }}
         {{- with $p.github }}<li><a href="https://github.com/{{ . }}">{{ partial "icon.html" "github" }}GitHub</a></li>{{ end }}

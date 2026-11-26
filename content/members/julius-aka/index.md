@@ -12,9 +12,9 @@ phone = ""
 office = ""
 orcid = "0009-0008-0363-6748"            # publications are fetched automatically from ORCID
 scholar = ""
-github = "juliusaka"
+github = "https://github.com/juliusaka"
 linkedin = "https://www.linkedin.com/in/julius-aka/"
-website = ["https://www.juliusaka.de", "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/julius-aka/"]
+website = "https://www.juliusaka.de"
 
 interests = ["Scientific machine learning", "Surrogate models", "Energy systems", "Neural ODEs", "Optimization"]
 joined = 2024-05-01                      # first day in the group: a year (2022) or an exact date (2022-04-01)
