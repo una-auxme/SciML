@@ -15,9 +15,10 @@
         {{- with $p.phone }}<li><a href="tel:{{ replaceRE `[^+\d]` "" . }}">{{ partial "icon.html" "phone" }}{{ . }}</a></li>{{ end }}
         {{- with $p.office }}<li><span>{{ partial "icon.html" "pin" }}{{ . }}</span></li>{{ end }}
         {{- with $p.website }}<li><a href="{{ . }}">{{ partial "icon.html" "globe" }}Website</a></li>{{ end }}
-        {{- with $p.orcid }}<li><a href="https://orcid.org/{{ . }}">{{ partial "icon.html" "orcid" }}ORCID</a></li>{{ end }}
-        {{- with $p.scholar }}<li><a href="https://scholar.google.com/citations?user={{ . }}">{{ partial "icon.html" "scholar" }}Google Scholar</a></li>{{ end }}
-        {{- with $p.github }}<li><a href="https://github.com/{{ . }}">{{ partial "icon.html" "github" }}GitHub</a></li>{{ end }}
+        {{- /* orcid, scholar and github may be given as an ID/user name or as a full profile URL */}}
+        {{- with $p.orcid }}<li><a href="https://orcid.org/{{ replaceRE `^.*orcid\.org/` "" . | strings.TrimSuffix "/" }}">{{ partial "icon.html" "orcid" }}ORCID</a></li>{{ end }}
+        {{- with $p.scholar }}<li><a href="https://scholar.google.com/citations?user={{ replaceRE `^.*[?&]user=([^&#]+).*$` "$1" . }}">{{ partial "icon.html" "scholar" }}Google Scholar</a></li>{{ end }}
+        {{- with $p.github }}<li><a href="https://github.com/{{ replaceRE `^.*github\.com/` "" . | strings.TrimSuffix "/" }}">{{ partial "icon.html" "github" }}GitHub</a></li>{{ end }}
         {{- with $p.linkedin }}<li><a href="{{ . }}">{{ partial "icon.html" "linkedin" }}LinkedIn</a></li>{{ end }}
       </ul>
     </aside>

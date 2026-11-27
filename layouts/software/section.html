@@ -30,7 +30,7 @@
       <header class="software-head">
         <h2>{{ .name }}</h2>
         {{- if gt $n 0 }}
-        <a class="stars" href="{{ strings.TrimSuffix "/" .repo }}/stargazers" title="GitHub stars{{ with $starsUpdated }} (as of {{ time.Format ":date_long" . }}){{ end }}" aria-label="{{ $n }} GitHub stars">
+        <a class="stars" href="{{ .repo }}" title="GitHub stars{{ with $starsUpdated }} (as of {{ time.Format ":date_long" . }}){{ end }}" aria-label="{{ $n }} GitHub stars">
           {{- partial "icon.html" "star" -}}
           <span>{{ if ge $n 1000 }}{{ printf "%.1fk" (div (float $n) 1000) }}{{ else }}{{ $n }}{{ end }}</span>
         </a>

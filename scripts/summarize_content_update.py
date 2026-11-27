@@ -24,9 +24,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 import tomllib
+from difflib import SequenceMatcher
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -111,6 +113,13 @@ def summarize(base: str, repo: str | None, branch: str | None) -> tuple[str, int
         added = [new[i] for i in new if i not in old]
         removed = [old[i] for i in old if i not in new]
         updated = [new[i] for i in new if i in old and new[i] != old[i]]
+        # A publication whose ID changed (e.g. because it got a DOI) is an update, not new + removed.
+        key = lambda p: re.sub(r"[^a-z0-9]", "", (p.get("title") or "").lower())
+        for p in list(added):
+            twin = next((q for q in removed if q.get("year") == p.get("year") and
+                         SequenceMatcher(None, key(p), key(q)).ratio() >= 0.9), None)
+            if twin:
+                added.remove(p); removed.remove(twin); updated.append(p)
         by_year = lambda ps: sorted(ps, key=lambda p: (-(p.get("year") or 0), p.get("title", "")))
         if added:
             sections.append(f"### New publications ({len(added)})\n\n" +
@@ -150,8 +159,10 @@ def summarize(base: str, repo: str | None, branch: str | None) -> tuple[str, int
         old_raw = at_base(base, MAP)
         old = json.loads(old_raw) if old_raw else {"nodes": [], "links": []}
         new = json.loads((ROOT / MAP).read_text(encoding="utf-8"))
+        base_pubs = at_base(base, PUBS)   # titles of publications that are gone now come from the base
         titles = {p["id"]: p.get("title", p["id"])
-                  for p in json.loads((ROOT / PUBS).read_text(encoding="utf-8"))["publications"]}
+                  for p in (json.loads(base_pubs)["publications"] if base_pubs else []) +
+                  json.loads((ROOT / PUBS).read_text(encoding="utf-8"))["publications"]}
         on, nn = {n["id"]: n for n in old["nodes"]}, {n["id"]: n for n in new["nodes"]}
         ol = {(l["source"], l["target"], l.get("kind", "")) for l in old["links"]}
         nl = {(l["source"], l["target"], l.get("kind", "")) for l in new["links"]}

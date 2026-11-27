@@ -50,7 +50,7 @@ after a visitor clicks play.
 | `group` | Section on the members page: `chair`, `lead`, `postdoc`, `researcher`, `phd`, `staff`, `student` (labels and order in `hugo.toml`). Keep it when the person leaves: `left` moves them to "Former members". |
 | `weight` | Order within the section (smaller comes first) |
 | `email`, `phone`, `office`, `website` | Contact details (all optional) |
-| `orcid`, `scholar`, `github`, `linkedin` | Profile links: ORCID iD, Google Scholar user id, GitHub user name, LinkedIn URL |
+| `orcid`, `scholar`, `github`, `linkedin` | Profile links: ORCID iD, Google Scholar user id, GitHub user name (each also works as the full profile URL), LinkedIn URL |
 | `interests` | Keywords, the first three are shown on the member card |
 | `joined`, `left` | First and last day in the group: an exact date (`2026-05-01`, no quotes) or just a year (`2022`). See below. |
 | `now` | After leaving: current position, e.g. `"Research engineer at Example GmbH"` |
@@ -167,7 +167,8 @@ and the website follows. Co-authored papers appear once in the group list and on
 To fix things, edit `publications.toml`:
 
 - `exclude`: hide a publication (DOI or exact title)
-- `[[override]]`: add a code or PDF link, an award note, or fix the type or venue of a publication
+- `[[override]]`: add a code or PDF link, an award note, or fix the type or venue of a publication;
+  with `title` and `doi`, add a missing DOI (authors, venue and link are then completed automatically)
 - `[[manual]]`: add a publication that is not on ORCID
 
 To update right away: *Actions → Content update → Run workflow*.
@@ -295,8 +296,8 @@ winget install Hugo.Hugo.Extended
 hugo server
 ```
 
-Then open the address Hugo prints (<http://localhost:1313/sciml-group/> with the example `baseURL`
-in `hugo.toml`). Pages reload as you edit. To refresh publications locally
+Then open the address Hugo prints (<http://localhost:1313/SciML/>, following the `baseURL` in
+`hugo.toml`). Pages reload as you edit. To refresh publications locally
 (Python 3.11+, no packages needed):
 
 ```bash
