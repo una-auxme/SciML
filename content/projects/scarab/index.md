@@ -2,9 +2,10 @@
 title = "SciML Classroom Arm for Research, AI & Benchmarking"
 acronym = "SCARAB"
 funding = "internal"                     # public | internal
-summary = "A small SCARA robot arm that writes on paper: a source of benchmark data and a training system for students to explore traditional and machine-learning-based modeling and control."
+summary = "A small SCARA (robot arm) that writes on paper: a source of benchmark data and a training system for students to explore traditional and machine-learning-based modeling and control."
 members = ["tobias-thummerer", "yi-zhang", "andreas-hofmann"]   # folder names in content/members/
-website = "https://github.com/SCARAB-robot/docu"
+website = "https://github.com/SCARAB-robot"
+start = "2026"
 weight = 6
 +++
 
@@ -18,8 +19,11 @@ control.
 
 The project consists of four parts:
 
-- **docu**: the project documentation, available on GitHub at
+- **docu**: the project documentation, see
   [SCARAB-robot/docu](https://github.com/SCARAB-robot/docu)
-- **system**: CAD files and PCB design files of the physical robot
-- **model**: simulation models of the robot
-- **data**: a dataset recorded from the real robot
+- **system**: CAD files and PCB design files of the physical robot, see
+  [SCARAB-robot/docu](https://github.com/SCARAB-robot/system)
+- **model**: simulation models of the robot, see
+  [SCARAB-robot/docu](https://github.com/SCARAB-robot/model)
+- **data**: a dataset recorded from the real robot, see
+  [SCARAB-robot/docu](https://github.com/SCARAB-robot/data)

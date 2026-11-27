@@ -23,5 +23,5 @@ Current topics for student theses are listed on the website of the Chair of Mech
 
 <p><a class="btn btn-primary" href="https://una-auxme.github.io/en/">Thesis topics at the Chair of Mechatronics</a></p>
 
-Do you have your very own SciML topic in mind? You are still welcome to 
+Do you have your very own SciML topic in mind? You are welcome to 
 [get in touch with us](mailto:sciml@informatik.uni-augsburg.de).

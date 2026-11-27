@@ -29,12 +29,12 @@ photoCaption = "The SciML group in 2026."
 # Research focus areas shown as cards. Icons: hybrid, ode, physics, simulation, data, code
 [[focus]]
   icon = "hybrid"
-  title = "Hybrid modeling"
+  title = "Hybrid modeling & Universal differential equations"
   text = "Combining physical models with neural networks to capture what the equations miss."
 [[focus]]
   icon = "ode"
   title = "Neural differential equations"
-  text = "Learning dynamics directly in continuous time with neural ODEs and universal differential equations."
+  text = "Learning dynamics directly in continuous time with neural ODEs, PDEs and SDEs."
 [[focus]]
   icon = "simulation"
   title = "Differentiable simulation"
