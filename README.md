@@ -16,10 +16,11 @@ hugo server   # local preview with live reload
 hugo          # build into public/
 ```
 
-Pushing to `main` builds the site via GitHub Actions and publishes it to GitHub Pages. Further
-workflows rebuild the site and announce new and departing members every day, update the
-publication list, the news for new publications and the GitHub stars once a week, and the
-publication map on the home page once a month.
+Pushing to `main` builds the site via GitHub Actions and publishes it to GitHub Pages; the site is
+also rebuilt every morning, which keeps date-dependent content and the GitHub star counts current.
+Once a week, a further workflow updates the publication list and the publication map and writes news
+for new publications, members and awards; it proposes these changes in a pull request, which is
+published once an admin has reviewed and merged it (see [MANUAL.md](MANUAL.md)).
 
 ## License
 
@@ -44,7 +45,7 @@ publications; their copyright remains with the authors and publishers. The publi
 `data/publications.json` and `data/publication_map.json` is collected from public databases
 ([ORCID](https://orcid.org), [Crossref](https://www.crossref.org), [DataCite](https://datacite.org),
 [OpenAlex](https://openalex.org)). Names and trademarks of third parties (for example funding
-programmes, conferences and software projects) belong to their respective owners.
+programs, conferences and software projects) belong to their respective owners.
 
 The YouTube preview images and videos on the workshops page are not part of this repository: the
 preview images are downloaded from YouTube when the site is built, and the videos are loaded from

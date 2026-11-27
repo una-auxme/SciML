@@ -582,6 +582,14 @@ def main() -> None:
         w["manual_fields"] = {k for k, v in entry.items() if v not in ("", [], None)}
         works.append(w)
 
+    # An [[override]] with both `title` and `doi` adds the DOI to a publication that has none
+    # (e.g. an ORCID entry without identifiers); the DOI is then resolved like any other.
+    for ov in curation.get("override", []):
+        if ov.get("title") and ov.get("doi"):
+            for w in works:
+                if not w.get("doi") and norm_title(w["title"]) == norm_title(ov["title"]):
+                    w["doi"] = norm_doi(ov["doi"])
+
     # 3) Complete metadata via DOI (only for DOIs not resolved before).
     todo = sorted({w["doi"] for w in works if w.get("doi") and w["doi"] not in doi_cache})
     resolved: dict[str, dict | None] = {}

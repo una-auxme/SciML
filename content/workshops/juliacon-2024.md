@@ -18,7 +18,7 @@ youtube = "sQ2MXSswrSo"
 
 If you know something about a physical system, machine learning should not have to learn it again.
 This hands-on workshop shows how to bring such system knowledge into machine learning by combining
-Functional Mock-up Units (FMUs) with neural networks, so-called neural FMUs. The use case is a SCARA
+Functional Mock-up Units (FMUs) with neural networks, so-called NeuralFMUs. The use case is a SCARA
 robot arm that writes words with a pen. Its physical simulation model misses the stick-slip friction
 between pen and paper, which the neural FMU learns from measurements. Participants build and train
 their own hybrid model in a Pluto notebook with [FMI.jl](https://github.com/JuliaFMI/FMI.jl) and

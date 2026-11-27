@@ -3,8 +3,6 @@ title = "Privacy"
 description = "Privacy policy."
 +++
 
-> **To do:** Replace with the privacy policy provided by your university.
-
 This website is a static site hosted on GitHub Pages. It sets no cookies, uses no analytics and loads
 no fonts or scripts from third-party servers. GitHub, as the hosting provider, processes technical
 access data (such as IP addresses) to deliver the website; see the

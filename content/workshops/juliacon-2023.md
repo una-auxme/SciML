@@ -19,6 +19,6 @@ youtube = "X_u0KlZizD4"
 Neural ODEs give impressive results on academic examples, but often disappoint on real applications:
 poor convergence, discontinuities and instabilities are some of the stumbling blocks. This workshop
 shows how to integrate industrial simulation models into neural ODEs through the FMI standard, and
-presents training strategies that make such hybrid models work in practice, including a distributed
+presents training strategies that make such hybrid models work in practice, including distributed
 hyperparameter optimization, using [FMI.jl](https://github.com/JuliaFMI/FMI.jl) and
 [FMIFlux.jl](https://github.com/JuliaFMI/FMIFlux.jl).

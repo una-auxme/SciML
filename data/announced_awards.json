@@ -1,0 +1,7 @@
+{
+ "_comment": "Awards announced as news (scripts/create_award_news.py). Remove an entry to announce it again.",
+ "announced": [
+  "2026-10-22-zig-dissertation-award",
+  "2026-11-20-science-prize-universitaetsstiftung"
+ ]
+}

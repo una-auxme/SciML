@@ -454,6 +454,11 @@ main > .section:last-child { padding-bottom: 0; }
 .mini-projects li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem 1rem; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); }
 .mini-projects a { text-decoration: none; color: var(--text); }
 .mini-projects a:hover { color: var(--accent-strong); }
+.mini-awards .award-main { display: flex; flex-direction: column; gap: .15rem; flex: 1 1 22rem; min-width: 0; }
+.mini-awards .award-main a { text-decoration: none; }
+.mini-awards .award-reason a, .mini-awards .award-by a { color: inherit; text-decoration: underline; text-decoration-color: var(--border); }
+.mini-awards .award-by, .mini-awards .award-orig { font-size: .92em; }
+.mini-awards .award-orig { margin-top: -.1rem; }
 @media (max-width: 760px) {
   .member-layout { grid-template-columns: 1fr; gap: 1.5rem; }
   .member-aside { position: static; display: grid; grid-template-columns: 120px 1fr; gap: 1.25rem; align-items: start; }

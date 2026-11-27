@@ -1,0 +1,189 @@
+# Once a week: runs all content updates and proposes the result as a pull request for review.
+#   - publications from the members' ORCID records (scripts/update_publications.py)
+#   - news for new publications, for new and departing members, and for new awards
+#   - the publication map on the home page (scripts/update_publication_map.py)
+# If anything new was found, it is committed to the branch `content-update`, and a pull request with
+# a summary by category is opened (or the open one is updated), together with an issue that asks
+# for a review. Nothing is published until the pull request is merged; merging deploys the site.
+# Edits made in the open pull request are kept: the next run continues on its branch.
+# Can also be started by hand: Actions -> Content update -> Run workflow.
+#
+# One-time setup: Settings -> Actions -> General -> Workflow permissions ->
+#   check "Allow GitHub Actions to create and approve pull requests".
+# Optional: repository variable CONTENT_REVIEWERS (Settings -> Secrets and variables -> Actions ->
+#   Variables), GitHub user names separated by commas: they are assigned to the issue and asked to
+#   review the pull request.
+# Optional secret ANTHROPIC_API_KEY: if set, the summaries in publication news are written by Claude.
+name: Content update
+
+on:
+  schedule:
+    - cron: "23 4 * * 1"   # Mondays, 04:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write        # to push the branch with the changes
+  pull-requests: write   # to open and update the pull request
+  issues: write          # to open the review issue
+
+concurrency:
+  group: content-update
+
+env:
+  BRANCH: content-update
+  LABEL: content-update
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install the Anthropic SDK (only if an API key is configured)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$ANTHROPIC_API_KEY" ]; then
+            pip install --quiet anthropic
+          else
+            echo "No ANTHROPIC_API_KEY secret: news summaries come from Semantic Scholar or the abstract."
+          fi
+
+      # Continue on the branch of an open update pull request (keeps reviewers' edits), brought up to
+      # date with main; otherwise start fresh from main.
+      - name: Prepare the branch
+        id: branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          pr=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$pr" ]; then
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+            if ! git merge --no-edit origin/main; then
+              git merge --abort
+              gh pr comment "$pr" --body "The weekly content update could not bring this branch up to date with \`main\` (merge conflict). Please merge or close this pull request; the next run then starts from \`main\` again."
+              echo "::error::Merge conflict between $BRANCH and main, see pull request #$pr."
+              exit 1
+            fi
+          else
+            git checkout -B "$BRANCH" origin/main
+          fi
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+
+      # All updates run even if one of them fails; failures are listed in the pull request and
+      # reported at the end.
+      - name: Fetch publications (ORCID)
+        id: publications
+        continue-on-error: true
+        run: python scripts/update_publications.py
+
+      - name: News for new publications
+        id: pubnews
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/create_publication_news.py
+
+      - name: News for new and departing members
+        id: membernews
+        continue-on-error: true
+        run: python scripts/create_member_news.py
+
+      - name: News for new awards
+        id: awardnews
+        continue-on-error: true
+        run: python scripts/create_award_news.py
+
+      - name: Publication map (OpenAlex, Crossref)
+        id: map
+        continue-on-error: true
+        run: python scripts/update_publication_map.py
+
+      - name: Summarize the changes
+        id: summary
+        run: |
+          new=$(python scripts/summarize_content_update.py --base HEAD --count)
+          echo "Significant changes in this run: $new"
+          echo "new=$new" >> "$GITHUB_OUTPUT"
+          python scripts/summarize_content_update.py --base origin/main --repo "$GITHUB_REPOSITORY" \
+            --branch "$BRANCH" --out "$RUNNER_TEMP/summary.md"
+
+      - name: Open or update the pull request and the review issue
+        if: steps.summary.outputs.new != '0'
+        env:
+          PR: ${{ steps.branch.outputs.pr }}
+          REVIEWERS: ${{ vars.CONTENT_REVIEWERS }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          STEPS: >-
+            Publications: ${{ steps.publications.outcome }} ·
+            publication news: ${{ steps.pubnews.outcome }} ·
+            member news: ${{ steps.membernews.outcome }} ·
+            award news: ${{ steps.awardnews.outcome }} ·
+            publication map: ${{ steps.map.outcome }}
+        run: |
+          today=$(date +%F)
+          git add -A data content/news
+          git commit -q -m "Content update $today"
+          if [ -n "$PR" ]; then git push origin "$BRANCH"; else git push --force origin "$BRANCH"; fi
+
+          # One review issue at a time; the pull request closes it when it is merged.
+          gh label create "$LABEL" --color 009b5d --description "Automatic weekly content update" --force
+          issue=$(gh issue list --label "$LABEL" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$issue" ]; then
+            url=$(gh issue create --title "Review the weekly content update" --label "$LABEL" \
+                    --body "Changes are waiting for review.")
+            issue=${url##*/}
+          fi
+
+          {
+            echo "Automatic weekly content update. **Nothing is published until this pull request is merged.**"
+            echo
+            echo "Please review the changes below and in the *Files changed* tab. You can edit or delete files"
+            echo "directly in this branch, for example to rewrite a news item, and then merge to publish."
+            echo "Closing without merging discards the changes; they are proposed again in the next run."
+            echo
+            cat "$RUNNER_TEMP/summary.md"
+            echo
+            echo "---"
+            echo "Last run: $today ([log]($RUN_URL)) · $STEPS"
+            echo
+            echo "Closes #$issue"
+          } > "$RUNNER_TEMP/pr.md"
+
+          if [ -n "$PR" ]; then
+            gh pr edit "$PR" --body-file "$RUNNER_TEMP/pr.md"
+            gh pr comment "$PR" --body "New changes from the content update on $today, see the updated summary above."
+          elif url=$(gh pr create --base main --head "$BRANCH" --title "Content update $today" \
+                       --label "$LABEL" --body-file "$RUNNER_TEMP/pr.md"); then
+            PR=${url##*/}
+          else
+            gh issue edit "$issue" --body "The weekly content update pushed changes to the branch \`$BRANCH\` but could not open a pull request. Enable *Settings → Actions → General → Allow GitHub Actions to create and approve pull requests*, or open it by hand: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/compare/main...$BRANCH"
+            echo "::error::Could not open the pull request; see issue #$issue."
+            exit 1
+          fi
+
+          {
+            echo "The weekly content update has changes waiting for review in pull request #$PR."
+            echo "Nothing is published before it is merged; merging it closes this issue."
+            echo
+            cat "$RUNNER_TEMP/summary.md"
+          } > "$RUNNER_TEMP/issue.md"
+          gh issue edit "$issue" --body-file "$RUNNER_TEMP/issue.md"
+
+          if [ -n "$REVIEWERS" ]; then
+            gh issue edit "$issue" --add-assignee "$REVIEWERS" || echo "::warning::Could not assign $REVIEWERS to issue #$issue."
+            gh pr edit "$PR" --add-reviewer "$REVIEWERS" || echo "::warning::Could not request a review from $REVIEWERS."
+          fi
+          echo "Pull request #$PR, issue #$issue" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report failed updates
+        if: steps.publications.outcome == 'failure' || steps.pubnews.outcome == 'failure' || steps.membernews.outcome == 'failure' || steps.awardnews.outcome == 'failure' || steps.map.outcome == 'failure'
+        run: |
+          echo "::error::An update step failed (publications: ${{ steps.publications.outcome }}, publication news: ${{ steps.pubnews.outcome }}, member news: ${{ steps.membernews.outcome }}, award news: ${{ steps.awardnews.outcome }}, publication map: ${{ steps.map.outcome }}). See the log above."
+          exit 1

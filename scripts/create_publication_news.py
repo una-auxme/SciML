@@ -2,7 +2,7 @@
 """
 Create a news item for every new publication of the group.
 
-Runs weekly on GitHub after scripts/update_publications.py (.github/workflows/weekly-update.yml).
+Runs weekly on GitHub after scripts/update_publications.py (.github/workflows/content-update.yml).
 For each publication in the group list (the same rules as the publications page) that has not
 been announced before, it writes content/news/<date>-pub-<title>.md with the member authors,
 the linked title and venue, and a summary of the abstract in one or two sentences.

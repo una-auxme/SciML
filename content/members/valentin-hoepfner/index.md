@@ -15,11 +15,11 @@ github = "https://github.com/halentin"
 linkedin = "https://www.linkedin.com/in/valentin-h%C3%B6pfner-85025041b/"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/valentin-hopfner/"
 
-interests = ["Hybrid models", "Scientific machine learning", "Optimization", "Automatic Differentiation"]
+interests = ["Hybrid models", "Optimization", "Automatic differentiation"]
 joined = 2024-05-01                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
-After studying engineering informatics at the University of Augsburg, with detours into mathematics and music education along the way, Valentin joined the Chair of Mechatronics in 2024 as a research associate.
+After studying Computer Science in Engineering at the University of Augsburg, with detours into mathematics and music education along the way, Valentin joined the Chair of Mechatronics in 2024 as a research associate.
 
 His interests include machine learning, differential equations, and automatic differentiation. He has a particular soft spot for optimization, which he also helps teach: an iterative process in which his exercises are updated once per year and convergence is expected eventually.
 

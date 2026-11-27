@@ -20,7 +20,7 @@ significantly higher accuracy in order to detect errors at an early stage.
 
 In **MoHyProTwin**, we research modular hybrid models that combine physics-based simulation models
 (e.g. Modelica) with machine learning methods. For this purpose, we use physics-enhanced neural ODEs
-(PeN-ODEs) from the field of Scientific Machine Learning. Thanks to the underlying physics, these
+(PeN-ODEs) from the field of scientific machine learning. Thanks to the underlying physics, these
 hybrid models are data-efficient and extrapolate significantly better than purely data-driven
 machine learning models.
 

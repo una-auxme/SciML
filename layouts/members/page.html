@@ -2,6 +2,7 @@
 {{- $slug := .File.ContentBaseName }}
 {{- $pubs := where (hugo.Data.publications.publications | default slice) "members" "intersect" (slice $slug) }}
 {{- $projects := where (where site.RegularPages "Section" "projects") "Params.members" "intersect" (slice $slug) }}
+{{- $awards := where (where site.RegularPages "Section" "awards") "Params.members" "intersect" (slice $slug) }}
 {{- $p := .Params }}
 
 <div class="container">
@@ -14,9 +15,10 @@
         {{- with $p.phone }}<li><a href="tel:{{ replaceRE `[^+\d]` "" . }}">{{ partial "icon.html" "phone" }}{{ . }}</a></li>{{ end }}
         {{- with $p.office }}<li><span>{{ partial "icon.html" "pin" }}{{ . }}</span></li>{{ end }}
         {{- with $p.website }}<li><a href="{{ . }}">{{ partial "icon.html" "globe" }}Website</a></li>{{ end }}
-        {{- with $p.orcid }}<li><a href="https://orcid.org/{{ . }}">{{ partial "icon.html" "orcid" }}ORCID</a></li>{{ end }}
-        {{- with $p.scholar }}<li><a href="https://scholar.google.com/citations?user={{ . }}">{{ partial "icon.html" "scholar" }}Google Scholar</a></li>{{ end }}
-        {{- with $p.github }}<li><a href="https://github.com/{{ . }}">{{ partial "icon.html" "github" }}GitHub</a></li>{{ end }}
+        {{- /* orcid, scholar and github may be given as an ID/user name or as a full profile URL */}}
+        {{- with $p.orcid }}<li><a href="https://orcid.org/{{ replaceRE `^.*orcid\.org/` "" . | strings.TrimSuffix "/" }}">{{ partial "icon.html" "orcid" }}ORCID</a></li>{{ end }}
+        {{- with $p.scholar }}<li><a href="https://scholar.google.com/citations?user={{ replaceRE `^.*[?&]user=([^&#]+).*$` "$1" . }}">{{ partial "icon.html" "scholar" }}Google Scholar</a></li>{{ end }}
+        {{- with $p.github }}<li><a href="https://github.com/{{ replaceRE `^.*github\.com/` "" . | strings.TrimSuffix "/" }}">{{ partial "icon.html" "github" }}GitHub</a></li>{{ end }}
         {{- with $p.linkedin }}<li><a href="{{ . }}">{{ partial "icon.html" "linkedin" }}LinkedIn</a></li>{{ end }}
       </ul>
     </aside>
@@ -44,6 +46,25 @@
           <li>
             <a href="{{ .RelPermalink }}">{{ with .Params.acronym }}<strong>{{ . }}</strong> · {{ end }}{{ .Title }}</a>
             <span class="muted">{{ partial "project-period.html" . }}</span>
+          </li>
+          {{- end }}
+        </ul>
+      </section>
+      {{- end }}
+
+      {{- with $awards }}
+      <section class="member-section">
+        <h2 class="section-title">Awards</h2>
+        <ul class="mini-projects mini-awards">
+          {{- range .ByDate.Reverse }}
+          <li>
+            <span class="award-main">
+              {{- if .Params.link }}<a href="{{ .Params.link }}"><strong>{{ .Title }}</strong></a>{{ else }}<strong>{{ .Title }}</strong>{{ end }}
+              {{- with .Params.origtitle }}<span class="muted award-orig">{{ . }}</span>{{ end }}
+              {{- with .Params.reason }}<span class="award-reason">for {{ . | $.RenderString }}</span>{{ end }}
+              {{- with .Params.by }}<span class="muted award-by">{{ replaceRE `^the ` "" . | $.RenderString }}</span>{{ end }}
+            </span>
+            <span class="muted">{{ .Date | time.Format "January 2006" }}</span>
           </li>
           {{- end }}
         </ul>

@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------
 
 # Overridden automatically by the GitHub Actions deploy workflow.
-baseURL = "https://example.github.io/sciml-group/"
+baseURL = "https://una-auxme.github.io/SciML/"
 locale = "en"
 title = "Scientific Machine Learning Research Group"
 # Copyright holder in the footer ("© <year> ...") and in the news feed.

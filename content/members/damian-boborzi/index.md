@@ -14,7 +14,7 @@ github = "https://github.com/FeMa42"
 linkedin = ""
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/damian-boborzi/"
 
-interests = ["Diffusion Models", "Generative AI", "Normalizing flows", "Reinforcement learning", "Imitation learning"]
+interests = ["Diffusion models", "Generative AI", "Normalizing flows", "Reinforcement learning", "Imitation learning"]
 joined = 2021                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 

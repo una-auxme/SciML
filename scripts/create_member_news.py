@@ -2,7 +2,8 @@
 """
 Create welcome and farewell news when members join or leave the group.
 
-Runs daily on GitHub (.github/workflows/daily-update.yml). For every member whose exact `joined`
+Runs weekly on GitHub (.github/workflows/content-update.yml), which proposes the news for review
+in a pull request. For every member whose exact `joined`
 or `left` date (a day such as 2026-05-01, not only a year or month) has been reached, it writes a
 news item content/news/<date>-welcome-<member>.md or <date>-farewell-<member>.md, dated on that
 day. The news items are ordinary Markdown files: edit or delete them like any other news.

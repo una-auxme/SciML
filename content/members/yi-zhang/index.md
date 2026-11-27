@@ -15,7 +15,7 @@ github = "https://github.com/serendipity11-flow"
 linkedin = "https://www.linkedin.com/in/yi-zhang-2020"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/yi-zhang/"
 
-interests = ["Bayesian deep learning", "generative AI", "normalizing flows", "simulation-based inference", "inverse problems", "system identification", "state estimation", "data-driven control"]
+interests = ["Bayesian deep learning", "Generative AI", "Normalizing flows", "Simulation-based inference", "Inverse problems", "System identification", "State estimation", "Data-driven control"]
 joined = 2021                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 

@@ -1,5 +1,5 @@
 +++
-title = "Open standards for scalable virtual engineering and operation"
+title = "Open Standards for Scalable Virtual Engineering and Operation"
 acronym = "OpenSCALING"
 funding = "public"                       # public | internal
 funder = "ITEA 4 (Eureka Cluster)"
@@ -7,7 +7,7 @@ grant = "ITEA project 22013"
 start = "2023-11"
 end = "2027-01"
 summary = "Making open modeling and simulation standards such as Modelica and FMI ready for large-scale systems, including physics-enhanced neural ODEs."
-members = ["lars-mikelsons", "tobias-thummerer", "andreas-hofmann"]   # folder names in content/members/
+members = ["tobias-thummerer", "andreas-hofmann", "julius-aka"]   # folder names in content/members/
 partners = ["Robert Bosch GmbH (coordinator)", "25 further partners from France, Germany, Hungary and Sweden"]
 website = "https://openscaling.org"
 publications = ["10.3384/ecp218435"]     # DOIs of project publications shown on this page
@@ -15,7 +15,7 @@ weight = 1
 +++
 
 **OpenSCALING** (*Open standards for SCALable virtual engineerING and operation*) is a European
-research project in the ITEA 4 programme of the Eureka network, running from November 2023 to
+research project in the ITEA 4 program of the Eureka network, running from November 2023 to
 January 2027. Its 26 partners from industry and academia in France, Germany, Hungary and Sweden
 enhance open standards for modeling and simulation, such as Modelica, FMI and SSP, and the tools
 built on them, so that they support large-scale systems and distributed controllers. The aim is to

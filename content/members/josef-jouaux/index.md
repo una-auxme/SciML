@@ -9,7 +9,7 @@ weight = 40                               # order within the group
 email = "josef.kircher@uni-a.de"
 phone = "+49 821 598-69274"
 office = "Room 3049, Building W"
-orcid = ""                               # add the ORCID iD to list publications automatically
+orcid = "0009-0003-2589-467X"                               # add the ORCID iD to list publications automatically
 scholar = ""
 github = ""
 linkedin = ""
@@ -20,8 +20,8 @@ joined = 2023                            # first day in the group: a year (2022)
 name_variants = ["Josef Kircher"]   # former name, for matching publications
 +++
 
-Josef Jouaux has been a research associate at the Chair of Mechatronics since 2023. He studied
-engineering informatics at the University of Augsburg.
+Josef has been a research associate at the Chair of Mechatronics since 2023. He studied
+Computer Science in Engineering at the University of Augsburg.
 
 His research accelerates the simulation of large particle systems by learning the particle dynamics
 with machine learning.

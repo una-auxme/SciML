@@ -21,6 +21,7 @@ after a visitor clicks play.
 | Members | `content/members/<name>/index.md` (+ optional `photo.jpg`) |
 | Projects | `content/projects/<name>/index.md` (+ optional `cover.jpg`) |
 | News | `content/news/<date>-<title>.md` |
+| Awards | `content/awards/<date>-<name>.md` (shown on the members' pages; news created automatically) |
 | Workshops | `content/workshops/<name>.md` (all on one page, newest first) |
 | Software | `data/software.toml` (GitHub stars are fetched automatically) |
 | Publications | automatic from ORCID, corrections in `publications.toml` |
@@ -49,7 +50,7 @@ after a visitor clicks play.
 | `group` | Section on the members page: `chair`, `lead`, `postdoc`, `researcher`, `phd`, `staff`, `student` (labels and order in `hugo.toml`). Keep it when the person leaves: `left` moves them to "Former members". |
 | `weight` | Order within the section (smaller comes first) |
 | `email`, `phone`, `office`, `website` | Contact details (all optional) |
-| `orcid`, `scholar`, `github`, `linkedin` | Profile links: ORCID iD, Google Scholar user id, GitHub user name, LinkedIn URL |
+| `orcid`, `scholar`, `github`, `linkedin` | Profile links: ORCID iD, Google Scholar user id, GitHub user name (each also works as the full profile URL), LinkedIn URL |
 | `interests` | Keywords, the first three are shown on the member card |
 | `joined`, `left` | First and last day in the group: an exact date (`2026-05-01`, no quotes) or just a year (`2022`). See below. |
 | `now` | After leaving: current position, e.g. `"Research engineer at Example GmbH"` |
@@ -77,9 +78,11 @@ The dates `joined` and `left` control the members page and the news feed automat
 - **Publications:** the group-wide list only counts a member's papers from the years between
   `joined` and `left`.
 
-Dates can be entered in advance: the workflow *Daily update* creates the news and rebuilds the
-site every morning. `data/announced_members.json` records what has been announced. To preview
-the news locally without writing files:
+Dates can be entered in advance. The site is rebuilt every morning, so the members page changes on
+the exact day. The news items are written by the weekly *Content update* and published once its pull
+request is reviewed and merged (see [Automatic content updates](#automatic-content-updates)); they
+are dated on the day of the event. `data/announced_members.json` records what has been announced.
+To preview the news locally without writing files:
 
 ```bash
 python scripts/create_member_news.py --dry-run
@@ -97,6 +100,32 @@ completed and no longer appear under "Current projects" on the home page.
 
 Create `content/news/2026-11-18-short-title.md` with `title`, `date` and one or two sentences.
 The three newest items appear on the home page.
+
+### Add an award
+
+Create `content/awards/2026-11-20-short-name.md` (copy an existing one, or run
+`hugo new content awards/2026-11-20-short-name.md`). Awards have no page of their own: each award
+is listed on the pages of its `members`, newest first, from its `date` on.
+
+| Field | Meaning |
+| --- | --- |
+| `title` | Name of the award (in English), e.g. `Best Paper Award` |
+| `origtitle` | Original name, if it is not English; shown in grey under the title on the member pages |
+| `date` | Day of the award, e.g. `2026-11-20` |
+| `members` | Member folder names, e.g. `["tobias-thummerer", "yi-zhang"]` |
+| `by` | Who gives the award, as it reads after "from", e.g. `"the Example Conference 2026"` (Markdown, links allowed) |
+| `reason` | What it is for, as it reads after "for", e.g. `"the paper *Title*"` (Markdown, links allowed) |
+| `link` | Optional page about the award |
+| `news`, `news_title` | `news = false` creates no news item; `news_title` replaces the generated title |
+
+**News:** the weekly *Content update* proposes a news item for each new award, e.g. "Yi Zhang and
+Andreas Hofmann received the *Best Paper Award* from the Example Conference 2026 for the paper
+*Title*. Congratulations!" Text below the front matter of the award replaces this sentence. The
+news item is an ordinary file in `content/news/` and can be edited afterwards. Awards whose date is
+more than 60 days in the past when they are added are not announced. `data/announced_awards.json`
+records what has been announced; a news item written by hand counts as well if its front matter
+has `award = "<file name of the award>"`. Preview without writing files:
+`python scripts/create_award_news.py --dry-run`.
 
 ### Add a workshop
 
@@ -122,14 +151,15 @@ Markdown page with `{{</* youtube VIDEO_ID */>}}`. The privacy page has a matchi
 
 ### Publications
 
-Publications are **not** maintained by hand. Once a week, the workflow *Weekly update*
+Publications are **not** maintained by hand. Once a week, the workflow *Content update*
 runs `scripts/update_publications.py`, which
 
 1. reads the ORCID iD of every member,
 2. downloads their public works from ORCID,
 3. completes authors, venue and type through the DOI (Crossref, DataCite/arXiv, ...),
 4. merges duplicates (co-authored papers appear once; a preprint becomes a link on its published version),
-5. writes `data/publications.json` and redeploys the site.
+5. writes `data/publications.json`, which is then proposed for review in a pull request
+   (see [Automatic content updates](#automatic-content-updates)).
 
 Members keep their ORCID record up to date, ideally with Crossref auto-update switched on in ORCID,
 and the website follows. Co-authored papers appear once in the group list and on each author's page.
@@ -137,10 +167,11 @@ and the website follows. Co-authored papers appear once in the group list and on
 To fix things, edit `publications.toml`:
 
 - `exclude`: hide a publication (DOI or exact title)
-- `[[override]]`: add a code or PDF link, an award note, or fix the type or venue of a publication
+- `[[override]]`: add a code or PDF link, an award note, or fix the type or venue of a publication;
+  with `title` and `doi`, add a missing DOI (authors, venue and link are then completed automatically)
 - `[[manual]]`: add a publication that is not on ORCID
 
-To update right away: *Actions → Weekly update → Run workflow*.
+To update right away: *Actions → Content update → Run workflow*.
 
 Only papers with at least one group member (in the group during that year) are listed group-wide.
 Papers of the head of chair (`group_publications = false`) count only when co-authored by a group
@@ -148,7 +179,7 @@ member; all of that person's papers still appear on their own member page.
 
 ### News for new publications
 
-After fetching publications, the weekly workflow runs `scripts/create_publication_news.py`. For every
+After fetching publications, the content update runs `scripts/create_publication_news.py`. For every
 new publication in the group list, it writes a news item to `content/news/` naming the member
 authors, the title and venue, with a one- or two-sentence summary of the abstract:
 
@@ -186,12 +217,13 @@ Below the introduction, the home page shows an interactive map of the group's pu
   authors, venue and abstract. Member names link to their pages and other authors to their ORCID profile.
 - The topic chips below the map highlight one topic.
 
-Once a month, the workflow *Publication map* runs `scripts/update_publication_map.py`. It fetches the
+Every week, the *Content update* also runs `scripts/update_publication_map.py`. It fetches the
 reference lists and citation counts from OpenAlex and Crossref, and abstracts from OpenAlex, Crossref,
-arXiv or Semantic Scholar. It writes `data/publication_map.json` and redeploys the site. Titles,
-authors and links come from `data/publications.json` when the site is built, so a new
-publication appears on the map after the next monthly run. To update right away:
-*Actions → Publication map → Run workflow*.
+arXiv or Semantic Scholar, and writes `data/publication_map.json`. Titles, authors and links come
+from `data/publications.json` when the site is built, so a new publication appears on the map once
+the content update that found it is merged. Refreshed citation counts alone do not open a pull
+request; they are included with the next real change. To update right away:
+*Actions → Content update → Run workflow*.
 
 Topics are set in the `[map]` section of `publications.toml`: `[[map.applications]]` for the
 application grouping and `[[map.methods]]` for the method grouping. Topic names appear on the map
@@ -214,13 +246,43 @@ python scripts/update_publication_map.py --offline
 ### Software
 
 Add a `[[package]]` block to `data/software.toml` with `name`, `description`, `repo`, `docs` and `tags`.
-For GitHub repositories, the *Weekly update* workflow also runs `scripts/update_github_stars.py`,
-which stores the current star counts in `data/github_stars.json`. The software page shows them
-with a star icon and sorts the packages by stars (most first). To fetch them locally:
+For GitHub repositories, `scripts/update_github_stars.py` fetches the current star counts every
+time the site is built (every morning and after every change). The software page shows them with a
+star icon and sorts the packages by stars (most first). The numbers in `data/github_stars.json` are
+only used when GitHub cannot be reached; they are not committed automatically. To fetch them locally:
 
 ```bash
 python scripts/update_github_stars.py
 ```
+
+## Automatic content updates
+
+Every Monday, the workflow *Content update* (`.github/workflows/content-update.yml`) collects
+everything that changed in the meantime:
+
+- new, updated or removed publications from the members' ORCID records,
+- news items for new publications, for members who joined or left, and for new awards,
+- the publication map on the home page.
+
+If it finds anything new, it opens a **pull request** with these changes and an **issue** that asks
+for a review; nothing is published before the pull request is merged. The description of the pull
+request summarizes the changes by category (new publications, updated publications, news feed
+items by kind, changes to the publication map), with a link to every new news item.
+
+To review:
+
+1. Open the pull request from the issue (or the *Pull requests* tab) and read the summary. The
+   *Files changed* tab shows every change in detail.
+2. To change a news item, open it from the summary and click the pencil icon (*Edit this file*);
+   commit to the same branch (`content-update`). To drop a news item, delete its file the same way.
+3. Merge the pull request. The site is rebuilt and published within a few minutes, and the issue
+   is closed.
+
+While a pull request is open, later runs add their changes to it (your edits stay), and the summary
+is updated. Closing a pull request without merging discards its changes, and they are proposed again
+in the next run; to drop something for good, delete it in the pull request and merge. The site is
+also rebuilt every morning without review, so that date-dependent content stays current; this
+changes no files.
 
 ## Local preview (optional)
 
@@ -234,8 +296,8 @@ winget install Hugo.Hugo.Extended
 hugo server
 ```
 
-Then open the address Hugo prints (<http://localhost:1313/sciml-group/> with the example `baseURL`
-in `hugo.toml`). Pages reload as you edit. To refresh publications locally
+Then open the address Hugo prints (<http://localhost:1313/SciML/>, following the `baseURL` in
+`hugo.toml`). Pages reload as you edit. To refresh publications locally
 (Python 3.11+, no packages needed):
 
 ```bash
@@ -253,9 +315,13 @@ New pages can also be created from templates, e.g. `hugo new content members/jan
 2. *Settings → Pages → Build and deployment → Source*: select **GitHub Actions**.
 3. Push to `main` (or run *Actions → Deploy site*). The site appears at
    `https://<org>.github.io/<repo>/`. The base URL is set automatically.
-4. Run *Actions → Weekly update* once after adding ORCID iDs or software packages, then
-   *Actions → Publication map*.
-5. Optional: set a custom domain such as `sciml.your-university.de` under *Settings → Pages*.
+4. *Settings → Actions → General → Workflow permissions*: check **Allow GitHub Actions to create
+   and approve pull requests**, so that the weekly content update can open its pull request.
+5. Optional: under *Settings → Secrets and variables → Actions → Variables*, add the variable
+   `CONTENT_REVIEWERS` with the GitHub user names of the reviewers, separated by commas. They are
+   assigned to each review issue and asked to review the pull request.
+6. Run *Actions → Content update* once after adding ORCID iDs.
+7. Optional: set a custom domain such as `sciml.your-university.de` under *Settings → Pages*.
    Your university's IT department has to add a DNS CNAME record for it.
 
 Note: GitHub pauses scheduled workflows in repositories without activity for 60 days. If that
