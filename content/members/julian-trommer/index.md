@@ -15,7 +15,7 @@ github = "https://github.com/JulianTrommer"
 linkedin = "https://de.linkedin.com/in/julian-trommer-84ba292a3"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/julian-trommer/"
 
-interests = ["Scientific machine learning", "Graph neural networks", "Fluid simulation", "Mechatronic systems"]
+interests = ["Graph neural networks", "Fluid simulation", "Mechatronic systems"]
 joined = 2021                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
