@@ -1,7 +1,10 @@
 {
  "_comment": "Member events announced as news (scripts/create_member_news.py). Remove an entry to announce it again.",
  "announced": [
+  "andreas-hofmann/joined/2022-07-01",
   "benjamin-schaab/joined/2026-05-01",
-  "tobias-thummerer/joined/2019-09-01"
+  "julius-aka/joined/2024-05-01",
+  "tobias-thummerer/joined/2019-09-01",
+  "valentin-hoepfner/joined/2024-05-01"
  ]
 }
