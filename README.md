@@ -16,10 +16,11 @@ hugo server   # local preview with live reload
 hugo          # build into public/
 ```
 
-Pushing to `main` builds the site via GitHub Actions and publishes it to GitHub Pages. Further
-workflows rebuild the site and announce new and departing members and new awards every day, update the
-publication list, the news for new publications and the GitHub stars once a week, and the
-publication map on the home page once a month.
+Pushing to `main` builds the site via GitHub Actions and publishes it to GitHub Pages; the site is
+also rebuilt every morning, which keeps date-dependent content and the GitHub star counts current.
+Once a week, a further workflow updates the publication list and the publication map and writes news
+for new publications, members and awards; it proposes these changes in a pull request, which is
+published once an admin has reviewed and merged it (see [MANUAL.md](MANUAL.md)).
 
 ## License
 

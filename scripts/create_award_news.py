@@ -2,7 +2,8 @@
 """
 Create a news item for every new award in content/awards/.
 
-Runs daily on GitHub (.github/workflows/daily-update.yml). For every award whose `date` has been
+Runs weekly on GitHub (.github/workflows/content-update.yml), which proposes the news for review
+in a pull request. For every award whose `date` has been
 reached and that has no news item yet, it writes content/news/<date>-award-<name>.md, dated on the
 day of the award, with a link to the award (`award = "<file name>"`). The news items are ordinary
 Markdown files: edit or delete them like any other news.

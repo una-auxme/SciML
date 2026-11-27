@@ -8,7 +8,7 @@
 
 <div class="container">
   {{- /*
-    Star counts come from data/github_stars.json, updated weekly by scripts/update_github_stars.py.
+    Star counts come from data/github_stars.json, fetched at every build by scripts/update_github_stars.py.
     Packages are sorted by stars (descending); ties and packages without stars keep the order of data/software.toml.
   */}}
   {{- $stars := hugo.Data.github_stars.stars | default dict }}

@@ -3,7 +3,8 @@
 Update data/github_stars.json with the current number of GitHub stars of every package
 listed in data/software.toml (field `repo`). The software page shows these numbers.
 
-Runs weekly on GitHub (.github/workflows/weekly-update.yml). Uses the GITHUB_TOKEN
+Runs at every build of the site (.github/workflows/deploy.yml); the result is not committed, the
+numbers in the repository are only a fallback. Uses the GITHUB_TOKEN
 environment variable if it is set (higher rate limit); works without it, too.
 If a repository cannot be reached, its previous number is kept.
 

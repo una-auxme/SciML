@@ -2,7 +2,7 @@
 """
 Build the data of the publication map on the home page: data/publication_map.json.
 
-Runs once a month on GitHub (.github/workflows/publication-map.yml). For every publication in
+Runs weekly on GitHub (.github/workflows/content-update.yml). For every publication in
 the group list (the same rules as the publications page) it collects
   - its topic in each grouping of the map (methods, applications), from the keywords in the
     [map] section of publications.toml,
