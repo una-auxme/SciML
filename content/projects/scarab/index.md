@@ -22,8 +22,8 @@ The project consists of four parts:
 - **docu**: the project documentation, see
   [SCARAB-robot/docu](https://github.com/SCARAB-robot/docu)
 - **system**: CAD files and PCB design files of the physical robot, see
-  [SCARAB-robot/docu](https://github.com/SCARAB-robot/system)
+  [SCARAB-robot/system](https://github.com/SCARAB-robot/system)
 - **model**: simulation models of the robot, see
-  [SCARAB-robot/docu](https://github.com/SCARAB-robot/model)
+  [SCARAB-robot/model](https://github.com/SCARAB-robot/model)
 - **data**: a dataset recorded from the real robot, see
-  [SCARAB-robot/docu](https://github.com/SCARAB-robot/data)
+  [SCARAB-robot/data](https://github.com/SCARAB-robot/data)
