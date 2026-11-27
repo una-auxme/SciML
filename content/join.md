@@ -18,7 +18,7 @@ No suitable position at the moment? You are still welcome to
 
 ## Theses
 
-We supervise Bachelor's and Master's theses in computer science, mathematics and engineering.
+We supervise bachelor's and master's theses in computer science, mathematics and engineering.
 Current topics for student theses are listed on the website of the Chair of Mechatronics:
 
 <p><a class="btn btn-primary" href="https://una-auxme.github.io/en/">Thesis topics at the Chair of Mechatronics</a></p>

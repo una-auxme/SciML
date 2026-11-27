@@ -20,6 +20,7 @@ exclude = [
 
 # Add or change fields of a fetched publication, matched by `doi` (or by `title`).
 # Possible fields: code, pdf, note, type, venue, title, authors, year, date, url
+# Given `title` and `doi`, the DOI is added to the publication with that title (when it has none).
 # [[override]]
 # doi = "10.1234/abcd.5678"
 # code = "https://github.com/your-org/your-repo"
@@ -39,6 +40,27 @@ pdf = "https://opus.bibliothek.uni-augsburg.de/opus4/files/130046/Thummerer_Diss
 [[override]]
 title = "Neural ODE-based Optimal Thermal System Control for Electric Vehicles with multi-functional Heat Pump System"
 date = "2026-08-07"
+
+# ORCID entries without a DOI (found on Crossref and arXiv): the DOI adds authors, venue and link.
+[[override]]
+title = "Learnable & Interpretable Model Combination in Dynamic Systems Modeling"
+doi = "10.48550/arXiv.2406.08093"
+
+[[override]]
+title = "Learning normalizing flow policies based on highway demonstrations"
+doi = "10.1109/ITSC48978.2021.9564456"
+
+[[override]]
+title = "Learning to Drive from Observations while Staying Safe"
+doi = "10.1109/IVWorkshops54471.2021.9669229"
+
+# Submission on OpenReview (no DOI); published in 2023 as "Imitation learning by state-only
+# distribution matching" (Applied Intelligence).
+[[override]]
+title = "State-only imitation learning by trajectory distribution matching"
+type = "preprint"
+venue = "OpenReview"
+url = "https://openreview.net/forum?id=qmf56RZbzFJ"
 
 # Publications that are not on ORCID (better: add them to your ORCID record!).
 # If you give a DOI, missing metadata is fetched automatically.
@@ -156,6 +178,24 @@ application = "Automotive & E-Mobility"   # vehicle longitudinal dynamics model
 [[map.paper]]
 title = "Paving the way for Hybrid Twins using Neural Functional Mock-Up Units"
 application = "Mechatronics & Robotics"   # hydraulic excavator arm
+
+# The publisher's metadata of these Modelica Conference 2025 papers lost the spaces at line breaks
+# ("forexchanging"); abstracts as in the published PDFs.
+[[map.paper]]
+doi = "10.3384/ecp218435"
+abstract = "Hybrid modeling – the combination of first-principle models and machine learning – offers the potential to increase model accuracy while reducing modeling effort. Although approaches for creating hybrid models from system simulation models exist, the unique characteristics of Modelica-based, object-oriented models – such as modularity and reusability – can, as of today, not be utilized. In this contribution, we explore approaches for bridging this gap to enable the use of hybrid models with Modelica. Key challenges of architecture definition, training environment and reintegration of the trained machine learning parts into a Modelica model are addressed. To illustrate our approach, we present a case study involving a SCARA robot. This example demonstrates a partially integrated workflow for hybrid modeling, intended to serve as a foundation and motivation for further research."
+
+[[map.paper]]
+doi = "10.3384/ecp218575"
+abstract = "Testing real hardware and simulation models in combination in a software- or hardware-in-the-loop set-up is challenging. One of the key factors is the high demand for accuracy in the simulation model. If classical modeling based on physical principles is not sufficient to reach the desired level of accuracy, hybrid modeling, the combination of physical simulation models and machine learning can be applied. In this publication, we train a hybrid model for a controlled electric motor within the electro-hydraulic braking system of a car under the conditions and restrictions of a real engineering application in the field. We apply state-of-the-art modeling patterns for this, and further extend them with application specific methodological optimizations. Finally, we investigate and show the quantitative and qualitative advantages of the proposed approach for this specific application, resulting in a gain in accuracy by multiple factors."
+
+[[map.paper]]
+doi = "10.3384/ecp218653"
+abstract = "We present two methods for speeding up co-simulations under the FMI standards. By smoothing the input signals inside each FMU, the internal integrator may avoid re-initialization. This can significantly reduce the number of model and Jacobian evaluations. To further help the integrator we also propose a predictor compensation technique tailored to the input smoother. The main benefit of our methods is the ease-of-use, requiring no model manipulations, nor any special co-simulation master algorithms. The methods are implemented in Dymola 2025x and validated with both an academic mechanical model as well as industrial thermo-fluid examples where we often observe over 10 times faster co-simulation and, in the best cases, up to 400 times faster. One of these thermo-fluid examples is used in the OpenSCALING research project to generate training data for constructing surrogate models, for which the input smoothing is especially important to speed up the dataset creation."
+
+[[map.paper]]
+doi = "10.3384/ecp218681"
+abstract = "The Functional Mock-up Interface (FMI) is the standard for exchanging industrial simulation models in a variety of different applications. Although sensitivity analysis for continuously differentiable systems is directly supported by the standard, for systems with state discontinuities, it is only possible to determine correct sensitivities to a limited extent. In this position paper, we investigate how sensitivity analysis for discontinuous Functional Mock-up Units (FMUs), i.e. including state and time events, works in theory and which additional steps are required to obtain correct results in practice. We further investigate that these steps are unnecessarily computationally intensive from a mathematical point of view, but cannot be implemented in a more efficient way under the current restrictions of the standard. We therefore make a concrete proposal for the new layered standard sensitivity analysis (LS-SA) that remedies the current deficits of FMI in the sensitivity analysis of discontinuous systems. In this way, LS-SA opens FMI towards a variety of next-level applications —including (scientific) machine learning and optimal control— by providing fully differentiable FMUs under high computational performance."
 
 # [[map.paper]]
 # title = "Title of the publication"

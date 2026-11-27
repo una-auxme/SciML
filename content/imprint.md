@@ -17,7 +17,7 @@ Email: [lars.mikelsons@uni-a.de](mailto:lars.mikelsons@uni-a.de)
 
 ## VAT ID
 
-VAT identification number according to § 27 a of the German VAT Act:\
+VAT identification number according to § 27a of the German VAT Act:\
 DE192097107
 
 ## Editorially responsible

@@ -1,5 +1,5 @@
 +++
-title = "The JuliaFMI ecosystem"
+title = "The JuliaFMI Ecosystem"
 acronym = "JuliaFMI"
 funding = "internal"                     # public | internal
 start = 2021

@@ -37,11 +37,11 @@ Our group worked on AI-supported simulation, in particular on hybrid models and 
 extrapolation for AI-enriched digital twins:
 
 - [Yi Zhang](/members/yi-zhang/) developed Bayesian methods for parameter identification and model
-  calibration with uncertainty quantification, based on BayesFlow and normalizing flows, applied for
-  example to the thermal model of a vehicle cabin and to the final testing of MEMS sensors.
+  calibration with uncertainty quantification, based on BayesFlow and normalizing flows, applied, for
+  example, to the thermal model of a vehicle cabin and to the final testing of MEMS sensors.
 - [Julian Trommer](/members/julian-trommer/) used MeshGraphNets as neural ODEs to simulate physical
   systems in industrial applications and developed the Julia package
   [MeshGraphNets.jl](https://github.com/una-auxme/MeshGraphNets.jl).
-- [Tobias Thummerer](/members/tobias-thummerer/) worked on neural FMUs for hybrid digital twins.
+- [Tobias Thummerer](/members/tobias-thummerer/) worked on NeuralFMUs for hybrid digital twins.
 
 More information: [phymos.de](https://phymos.de/en/)

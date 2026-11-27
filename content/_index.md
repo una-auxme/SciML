@@ -13,7 +13,7 @@ photoCaption = "The SciML group in 2026."
 
 [hero]
   eyebrow = "SciML Research Group · Chair of Mechatronics · University of Augsburg"
-  # {words} is replaced by words that change every two seconds; edit them in data/hero_words.toml.
+  # {words} is replaced by words that change every few seconds; edit them (and the interval) in data/hero_words.toml.
   # The text after {words} starts on a new line. {s} becomes "s" after singular words ("meets").
   heading = "Where {words} meet{s} machine learning"
   lead = "We develop methods that combine first-principles models, numerical simulation and machine learning, so that models become more accurate, faster and still explainable."
@@ -45,7 +45,7 @@ photoCaption = "The SciML group in 2026."
   text = "Research code that is released, documented and maintained, so others can use it."
 +++
 
-In 2022, we launched a SciML meeting series at the University of Augsburg to create a platform for like-minded researchers in the field of SciML to exchange and discuss ideas. As things progressed, in October 2026, this informal group evolved into an organized research group at the Chair of Mechatronics, where postdocs, doctoral students, and research assistants collaborate closely on SciML research.
+In 2022, we launched a SciML meeting series at the University of Augsburg to create a platform for like-minded researchers in the field of SciML to exchange and discuss ideas. As things progressed, in April 2026, this informal group evolved into an organized research group at the Chair of Mechatronics, where postdocs, doctoral students, and research assistants collaborate closely on SciML research.
 
 The **Scientific Machine Learning Research Group** works at the interface of numerical mathematics,
 engineering and machine learning. We are interested in models that do not have to choose between

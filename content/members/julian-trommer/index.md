@@ -19,8 +19,8 @@ interests = ["Graph neural networks", "Fluid simulation", "Mechatronic systems"]
 joined = 2021                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
-After studying computer science in engineering at the University of Augsburg, Julian joined the Chair of Mechatronics in 2021 as a research associate.
+After studying Computer Science in Engineering at the University of Augsburg, Julian joined the Chair of Mechatronics in 2021 as a research associate.
 
-His research combines physical modeling and machine learning to simulate mechatronic systems, with a particular interest in fluid simulation. He works with graph neural networks, especially MeshGraphNets, in combination with neural ordinary differential equations (Neural ODEs), and explores how XLA compilation can make these models run faster.
+His research combines physical modeling and machine learning to simulate mechatronic systems, with a particular interest in fluid simulation. He works with graph neural networks, especially MeshGraphNets, in combination with neural ordinary differential equations (neural ODEs), and explores how XLA compilation can make these models run faster.
 
 Julian is the main maintainer of the Julia software packages MeshGraphNets.jl and GraphNetCore.jl and one of the main maintainers of Optuna.jl.

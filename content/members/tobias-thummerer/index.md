@@ -19,7 +19,7 @@ joined = 2019-09-01                            # first day in the group: a year 
 +++
 
 Tobias leads the Scientific Machine Learning group. Starting in the summer semester of 2027, he will teach the new course *Scientific Machine Learning* at the University of Augsburg. He has been a research associate at the
-Chair of Mechatronics since 2019 and studied engineering and computer sciences at the University of Augsburg.
+Chair of Mechatronics since 2019 and studied Computer Science in Engineering at the University of Augsburg.
 
 His research combines data-driven and physical models (hybrid modeling), scientific machine learning, and cross-domain
-object-oriented modeling. He develops the open-source JuliaFMI ecosystem (former FMI.jl).
+object-oriented modeling. He develops the open-source JuliaFMI ecosystem (formerly FMI.jl).

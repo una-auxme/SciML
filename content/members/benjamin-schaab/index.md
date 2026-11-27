@@ -28,6 +28,6 @@ search down to a single component, the network only has to learn the physics tha
 not the whole system from scratch. That makes these hybrid models easier to interpret and far less
 hungry for data than their monolithic cousins.
 
-He joined the Scientific Machine Learning group in 2026, and has been searching for the missing physics ever since.
+He joined the Scientific Machine Learning group in 2026 and has been searching for the missing physics ever since.
 
 Away from the keyboard, multi-pitch climbing and mountaineering keep his weekends as vertical as his loss landscapes, with the notable difference that there, he is after the global maximum, and getting stuck in a local one still comes with a view.

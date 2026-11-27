@@ -1,5 +1,5 @@
 +++
-title = "Open standards for scalable virtual engineering and operation"
+title = "Open Standards for Scalable Virtual Engineering and Operation"
 acronym = "OpenSCALING"
 funding = "public"                       # public | internal
 funder = "ITEA 4 (Eureka Cluster)"

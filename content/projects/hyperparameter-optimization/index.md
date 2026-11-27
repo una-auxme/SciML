@@ -4,7 +4,7 @@ acronym = "Optuna.jl"
 funding = "internal"                     # public | internal
 start = 2026
 summary = "Optuna.jl brings the open-source hyperparameter optimization framework Optuna to the Julia programming language."
-members = ["julian-trommer", "tobias-thummerer", "andreas-hofmann", "josef-jouaux"]
+members = ["julian-trommer", "tobias-thummerer", "andreas-hofmann", "josef-jouaux", "valentin-hoepfner"]
 website = "https://github.com/una-auxme/Optuna.jl"
 weight = 5
 +++

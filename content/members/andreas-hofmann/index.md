@@ -22,5 +22,5 @@ Andreas explores how object-oriented and data-driven modeling can be merged to c
 
 His love affair with object-oriented modeling began in 2012, while studying mechanical engineering at the Technical University of Dresden. He then spent many years putting it into practice at Bosch. In 2022, he took the leap into academia to dive into hybrid modeling and merge it with his object-oriented modeling expertise.
 
-When he's not building those hybrid models in Julia, your best chance to find him is somewhere in the Alps well above 2000m.
+When he's not building those hybrid models in Julia, your best chance to find him is somewhere in the Alps well above 2,000 m.
 
