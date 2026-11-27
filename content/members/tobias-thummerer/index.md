@@ -14,7 +14,7 @@ github = "ThummeTo"
 linkedin = "https://www.linkedin.com/in/tobias-thummerer-a70435290/"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/tobias-thummerer/"
 
-interests = ["Hybrid modeling", "Object-oriented modeling"]
+interests = ["Hybrid modeling", "Object-oriented modeling", "FMI", "Real-world applications"]
 joined = 2019-09-01                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 

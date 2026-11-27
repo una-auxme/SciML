@@ -20,8 +20,8 @@ joined = 2023                            # first day in the group: a year (2022)
 name_variants = ["Josef Kircher"]   # former name, for matching publications
 +++
 
-Josef Jouaux has been a research associate at the Chair of Mechatronics since 2023. He studied
-engineering informatics at the University of Augsburg.
+Josef has been a research associate at the Chair of Mechatronics since 2023. He studied
+engineering and computer sciences at the University of Augsburg.
 
 His research accelerates the simulation of large particle systems by learning the particle dynamics
 with machine learning.

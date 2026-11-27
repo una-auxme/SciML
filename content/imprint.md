@@ -12,7 +12,7 @@ Prof. Dr.-Ing. Lars Mikelsons
 
 ## Contact
 
-Phone: +49 (0) 821 598 69270\
+Phone: +49 821 598-69270\
 Email: [lars.mikelsons@uni-a.de](mailto:lars.mikelsons@uni-a.de)
 
 ## VAT ID
