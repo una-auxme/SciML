@@ -15,7 +15,7 @@ github = "https://github.com/Benj-mark"
 linkedin = "https://de.linkedin.com/in/benjamin-schaab-8850341b4"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/benjamin-schaab/"
 
-interests = ["Hybrid object-oriented modelling", "Physics-enhanced N-ODEs", "Robotics", "FEA"]
+interests = ["Hybrid object-oriented modeling", "Physics-enhanced N-ODEs", "Robotics", "FEA"]
 joined = 2026-05-01                      # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 

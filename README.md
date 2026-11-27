@@ -44,7 +44,7 @@ publications; their copyright remains with the authors and publishers. The publi
 `data/publications.json` and `data/publication_map.json` is collected from public databases
 ([ORCID](https://orcid.org), [Crossref](https://www.crossref.org), [DataCite](https://datacite.org),
 [OpenAlex](https://openalex.org)). Names and trademarks of third parties (for example funding
-programmes, conferences and software projects) belong to their respective owners.
+programs, conferences and software projects) belong to their respective owners.
 
 The YouTube preview images and videos on the workshops page are not part of this repository: the
 preview images are downloaded from YouTube when the site is built, and the videos are loaded from

@@ -15,7 +15,7 @@ github = "https://github.com/halentin"
 linkedin = "https://www.linkedin.com/in/valentin-h%C3%B6pfner-85025041b/"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/valentin-hopfner/"
 
-interests = ["Hybrid models", "Scientific machine learning", "Optimization", "Automatic Differentiation"]
+interests = ["Hybrid models", "Optimization", "Automatic differentiation"]
 joined = 2024-05-01                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 

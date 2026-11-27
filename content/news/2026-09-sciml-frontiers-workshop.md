@@ -9,6 +9,6 @@ took place in Augsburg. Researchers from different disciplines revisited the pri
 directions for Scientific Machine Learning set out in 2018 and discussed the future research agenda
 of the field in a keynote, technical talks and breakout sessions.
 
-The workshop was organised by [Andreas Hofmann](/members/andreas-hofmann/) together with
+The workshop was organized by [Andreas Hofmann](/members/andreas-hofmann/) together with
 [Lars Mikelsons](/members/lars-mikelsons/) and Michael Schlottke-Lakemper, and hosted by the Centre for
 Advanced Analytics and Predictive Sciences (CAAPS) at the University of Augsburg.

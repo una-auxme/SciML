@@ -15,7 +15,7 @@ weight = 1
 +++
 
 **OpenSCALING** (*Open standards for SCALable virtual engineerING and operation*) is a European
-research project in the ITEA 4 programme of the Eureka network, running from November 2023 to
+research project in the ITEA 4 program of the Eureka network, running from November 2023 to
 January 2027. Its 26 partners from industry and academia in France, Germany, Hungary and Sweden
 enhance open standards for modeling and simulation, such as Modelica, FMI and SSP, and the tools
 built on them, so that they support large-scale systems and distributed controllers. The aim is to

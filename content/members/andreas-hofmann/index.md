@@ -14,7 +14,7 @@ github = "AndreasHofmann217"
 linkedin = "https://www.linkedin.com/in/andreashofmann87/"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/andreas-hofmann/"
 
-interests = ["Object-oriented modeling", "Hybrid modeling", "Industrial Applications"]
+interests = ["Object-oriented modeling", "Hybrid modeling", "Industrial applications"]
 joined = 2022-07-01                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 +++
 
