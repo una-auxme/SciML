@@ -9,13 +9,13 @@ weight = 40                               # order within the group
 email = "josef.kircher@uni-a.de"
 phone = "+49 821 598-69274"
 office = "Room 3049, Building W"
-orcid = ""                               # add the ORCID iD to list publications automatically
+orcid = "0009-0003-2589-467X"                               # add the ORCID iD to list publications automatically
 scholar = ""
-github = ""
-linkedin = ""
+github = "https://github.com/JoKircher"
+linkedin = "www.linkedin.com/in/josef-jouaux-b92079431"
 website = "https://www.uni-augsburg.de/de/fakultaet/fai/informatik/prof/imech/team/josef-jouaux/"
 
-interests = ["Particle simulation", "Learned dynamics"]
+interests = ["Particle simulation", "Graph Neural Networks", "Mechatronics"]
 joined = 2023                            # first day in the group: a year (2022) or an exact date (2022-04-01)
 name_variants = ["Josef Kircher"]   # former name, for matching publications
 +++
@@ -23,5 +23,7 @@ name_variants = ["Josef Kircher"]   # former name, for matching publications
 Josef Jouaux has been a research associate at the Chair of Mechatronics since 2023. He studied
 engineering informatics at the University of Augsburg.
 
-His research accelerates the simulation of large particle systems by learning the particle dynamics
+His research combines the methods from Graph Neural Networks and Neural ODEs to accelerate the simulation of large particle systems by learning the particle dynamics
 with machine learning.
+
+Josef is the main maintainer of the Julia software packages GraphNetSim.jl and one of the main maintainers of Optuna.jl and GraphNetCore.jl .
