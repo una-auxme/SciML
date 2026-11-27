@@ -2,6 +2,7 @@
 title = "Dissertation award for Tobias Thummerer"
 date = 2026-10-22
 link = ""
+award = "2026-10-22-zig-dissertation-award"            # content/awards/2026-10-22-zig-dissertation-award.md
 +++
 
 [Tobias Thummerer](/members/tobias-thummerer/) received the *Award for an outstanding doctoral dissertation

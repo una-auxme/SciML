@@ -2,6 +2,7 @@
 {{- $slug := .File.ContentBaseName }}
 {{- $pubs := where (hugo.Data.publications.publications | default slice) "members" "intersect" (slice $slug) }}
 {{- $projects := where (where site.RegularPages "Section" "projects") "Params.members" "intersect" (slice $slug) }}
+{{- $awards := where (where site.RegularPages "Section" "awards") "Params.members" "intersect" (slice $slug) }}
 {{- $p := .Params }}
 
 <div class="container">
@@ -44,6 +45,25 @@
           <li>
             <a href="{{ .RelPermalink }}">{{ with .Params.acronym }}<strong>{{ . }}</strong> · {{ end }}{{ .Title }}</a>
             <span class="muted">{{ partial "project-period.html" . }}</span>
+          </li>
+          {{- end }}
+        </ul>
+      </section>
+      {{- end }}
+
+      {{- with $awards }}
+      <section class="member-section">
+        <h2 class="section-title">Awards</h2>
+        <ul class="mini-projects mini-awards">
+          {{- range .ByDate.Reverse }}
+          <li>
+            <span class="award-main">
+              {{- if .Params.link }}<a href="{{ .Params.link }}"><strong>{{ .Title }}</strong></a>{{ else }}<strong>{{ .Title }}</strong>{{ end }}
+              {{- with .Params.origtitle }}<span class="muted award-orig">{{ . }}</span>{{ end }}
+              {{- with .Params.reason }}<span class="award-reason">for {{ . | $.RenderString }}</span>{{ end }}
+              {{- with .Params.by }}<span class="muted award-by">{{ replaceRE `^the ` "" . | $.RenderString }}</span>{{ end }}
+            </span>
+            <span class="muted">{{ .Date | time.Format "January 2006" }}</span>
           </li>
           {{- end }}
         </ul>

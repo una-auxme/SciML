@@ -2,6 +2,7 @@
 title = "Science prize of the Universitätsstiftung Augsburg for Tobias Thummerer"
 date = 2026-11-20
 link = "https://opus.bibliothek.uni-augsburg.de/opus4/130046"
+award = "2026-11-20-science-prize-universitaetsstiftung"            # content/awards/2026-11-20-science-prize-universitaetsstiftung.md
 +++
 
 [Tobias Thummerer](/members/tobias-thummerer/) received the *Wissenschaftspreis der Universitätsstiftung

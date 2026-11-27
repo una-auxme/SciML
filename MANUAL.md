@@ -21,6 +21,7 @@ after a visitor clicks play.
 | Members | `content/members/<name>/index.md` (+ optional `photo.jpg`) |
 | Projects | `content/projects/<name>/index.md` (+ optional `cover.jpg`) |
 | News | `content/news/<date>-<title>.md` |
+| Awards | `content/awards/<date>-<name>.md` (shown on the members' pages; news created automatically) |
 | Workshops | `content/workshops/<name>.md` (all on one page, newest first) |
 | Software | `data/software.toml` (GitHub stars are fetched automatically) |
 | Publications | automatic from ORCID, corrections in `publications.toml` |
@@ -97,6 +98,32 @@ completed and no longer appear under "Current projects" on the home page.
 
 Create `content/news/2026-11-18-short-title.md` with `title`, `date` and one or two sentences.
 The three newest items appear on the home page.
+
+### Add an award
+
+Create `content/awards/2026-11-20-short-name.md` (copy an existing one, or run
+`hugo new content awards/2026-11-20-short-name.md`). Awards have no page of their own: each award
+is listed on the pages of its `members`, newest first, from its `date` on.
+
+| Field | Meaning |
+| --- | --- |
+| `title` | Name of the award (in English), e.g. `Best Paper Award` |
+| `origtitle` | Original name, if it is not English; shown in grey under the title on the member pages |
+| `date` | Day of the award, e.g. `2026-11-20` |
+| `members` | Member folder names, e.g. `["tobias-thummerer", "yi-zhang"]` |
+| `by` | Who gives the award, as it reads after "from", e.g. `"the Example Conference 2026"` (Markdown, links allowed) |
+| `reason` | What it is for, as it reads after "for", e.g. `"the paper *Title*"` (Markdown, links allowed) |
+| `link` | Optional page about the award |
+| `news`, `news_title` | `news = false` creates no news item; `news_title` replaces the generated title |
+
+**News:** the workflow *Daily update* writes a news item for each new award, e.g. "Yi Zhang and
+Andreas Hofmann received the *Best Paper Award* from the Example Conference 2026 for the paper
+*Title*. Congratulations!" Text below the front matter of the award replaces this sentence. The
+news item is an ordinary file in `content/news/` and can be edited afterwards. Awards whose date is
+more than 60 days in the past when they are added are not announced. `data/announced_awards.json`
+records what has been announced; a news item written by hand counts as well if its front matter
+has `award = "<file name of the award>"`. Preview without writing files:
+`python scripts/create_award_news.py --dry-run`.
 
 ### Add a workshop
 
